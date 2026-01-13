@@ -1,7 +1,7 @@
 package dev.parkingApp.repositories;
 
-import dev.parkingApp.entities.RentEntity;
+import dev.parkingApp.entities.BookingEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RentRepository extends CrudRepository<RentEntity, Long> {
+public interface RentRepository extends CrudRepository<BookingEntity, Long> {
 }

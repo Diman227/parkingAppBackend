@@ -7,13 +7,13 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/vorstu
+    url: jdbc:postgresql://localhost:5432/parkingApp
     username: postgres
     password: zaq1@WSX
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:

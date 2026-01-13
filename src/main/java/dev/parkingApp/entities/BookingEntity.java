@@ -13,12 +13,14 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Table(name = "rents")
-public class RentEntity {
+public class BookingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rent_id")
     private Long id;
+
+    private Date createdAt;
 
     private Date startAt;
 

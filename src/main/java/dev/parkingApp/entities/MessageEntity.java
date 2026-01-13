@@ -23,6 +23,8 @@ public class MessageEntity {
 
     private Date sentAt;
 
+    private Date readAt;
+
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
