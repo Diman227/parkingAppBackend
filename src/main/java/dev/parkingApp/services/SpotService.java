@@ -1,4 +1,44 @@
 package dev.parkingApp.services;
 
+import dev.parkingApp.dtos.SpotDTO;
+import dev.parkingApp.entities.SpotEntity;
+import dev.parkingApp.entities.UserEntity;
+import dev.parkingApp.mappers.SpotMapper;
+import dev.parkingApp.repositories.SpotRepository;
+import dev.parkingApp.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
 public class SpotService {
+
+    private final SpotRepository spotRepository;
+    private final SpotMapper spotMapper;
+    private final UserRepository userRepository;
+
+    public SpotDTO addSpot(SpotDTO spotDTO) {
+        SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
+        UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(() -> new RuntimeException("Такого юзера нет"));
+        spot.setOwner(user);
+        spot.setCreatedAt(new Date());
+        return spotMapper.toSpotDTO(spotRepository.save(spot));
+    }
+
+    public SpotDTO updateSpot(SpotDTO spotDTO) {
+        SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
+        UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(() -> new RuntimeException("Такого юзера нет"));
+        spot.setOwner(user);
+        return spotMapper.toSpotDTO(spotRepository.save(spot));
+    }
+
+    public Long deleteSpot(Long spotId) {
+        spotRepository.deleteById(spotId);
+        return spotId;
+    }
+
+//    public List<SpotDTO> getUserOwnedSpots()
 }

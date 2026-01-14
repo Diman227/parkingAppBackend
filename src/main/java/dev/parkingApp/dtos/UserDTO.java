@@ -19,8 +19,4 @@ public class UserDTO {
 
     private String email;
 
-    private String phoneNumber;
-
-    private Long credentialsId;
-
 }

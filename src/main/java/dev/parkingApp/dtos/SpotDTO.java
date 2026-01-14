@@ -21,6 +21,8 @@ public class SpotDTO {
 
     private String address;
 
+    private BigDecimal rate;
+
     private BigDecimal price;
 
     private Date createdAt;

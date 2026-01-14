@@ -30,3 +30,7 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+
+token:
+  signing:
+    key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
