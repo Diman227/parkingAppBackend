@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpotDTO {
+public class SpotWithOwnerDTO {
 
     private Long id;
 
@@ -29,7 +29,7 @@ public class SpotDTO {
 
     private CoordinatesDTO location;
 
-    private Long ownerId;
+    private UserDTO owner;
 
     private List<ReviewDTO> reviews;
 

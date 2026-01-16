@@ -15,11 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthUser implements UserDetails {
 
-     //todo сюда id
      private String password;
      private String username;
      private String phoneNumber;
      private boolean enabled;
      private List<SimpleGrantedAuthority> authorities;
      private Long credentialsId;
+     private Long userId;
 }

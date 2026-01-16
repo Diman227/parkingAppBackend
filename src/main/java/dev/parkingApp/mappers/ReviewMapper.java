@@ -5,6 +5,8 @@ import dev.parkingApp.entities.ReviewEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
 
@@ -14,5 +16,8 @@ public interface ReviewMapper {
 
     ReviewEntity toReviewEntity(ReviewDTO reviewDTO);
 
-    // todo добавить методы для списков и также просмотреть где еще такие методы
+    List<ReviewDTO> toListReviewDTOs(List<ReviewEntity> reviews);
+
+    List<ReviewEntity> toListReviewEntities(List<ReviewDTO> reviews);
+
 }

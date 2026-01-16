@@ -21,24 +21,25 @@ public class AuthUserDetailsService implements UserDetailsService {
     private final CredentialsRepository credentialsRepository;
     private final UserRepository userRepository;
 
-    //todo метод должен так называться
     @Override
     public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        CredentialsEntity user = credentialsRepository.findByPhoneNumber(username).orElseThrow(
+        UserEntity user = userRepository.getUserByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException(String.format("User %s not found", username))
         );
 
         return AuthUser.builder()
-                .phoneNumber(user.getPhoneNumber())
-                .password(user.getPassword().getPassword())
+                .phoneNumber(user.getCredentials().getPhoneNumber())
+                .password(user.getCredentials().getPassword().getPassword())
                 .enabled(true)
-                .credentialsId(user.getId())
+                .credentialsId(user.getCredentials().getId())
+                .userId(user.getId())
                 .authorities(List.of(new SimpleGrantedAuthority("ROLE_USER")))
                 .build();
     }
 
     public void createUser(SignInRequest request) {
 
+        // transaction?
         CredentialsEntity credentialsEntity = CredentialsEntity.builder()
                 .phoneNumber(request.getPhoneNumber())
                 .password(new PasswordEntity(request.getPassword()))

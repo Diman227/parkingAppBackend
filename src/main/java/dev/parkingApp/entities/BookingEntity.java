@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -12,28 +12,32 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "rents")
+@Table(name = "bookings")
 public class BookingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rent_id")
+    @Column(name = "booking_id", nullable = false)
     private Long id;
 
-    private Date createdAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    private Date startAt;
+    @Column(nullable = false)
+    private LocalDateTime startAt;
 
-    private Date endAt;
+    @Column(nullable = false)
+    private LocalDateTime endAt;
 
+    @Column(nullable = false)
     private BigDecimal totalPrice;
 
     // todo ManyToOne потому что у одного ПМ могут быть брони на разное время
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rented_spot")
+    @JoinColumn(name = "rented_spot", nullable = false)
     private SpotEntity spot;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "renter_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "renter_id", nullable = false)
     private UserEntity renter;
 }

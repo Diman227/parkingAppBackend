@@ -18,4 +18,14 @@ public class ImageEntity {
     private Long id;
 
     private String externalId;
+
+    // todo правильна ли такая реализация?
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spot_id")
+    private SpotEntity spot;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private ReviewEntity review;
 }

@@ -29,12 +29,13 @@ public class UserEntity {
     @JoinColumn(name = "credentials_id")
     private CredentialsEntity credentials;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<SpotEntity> ownedSpots;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<SpotEntity> bookedSpots;
+    @ManyToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<BookingEntity> bookings;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // todo связь неправильная, надо будет подумать и переделать
+    @ManyToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<ChatEntity> chats;
 }

@@ -9,6 +9,7 @@ import dev.parkingApp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,11 @@ public class SpotService {
 
     public SpotDTO addSpot(SpotDTO spotDTO) {
         SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
+
+        //todo getRef
         UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(() -> new RuntimeException("Такого юзера нет"));
         spot.setOwner(user);
-        spot.setCreatedAt(new Date());
+        spot.setCreatedAt(LocalDateTime.now());
         return spotMapper.toSpotDTO(spotRepository.save(spot));
     }
 
@@ -40,5 +43,8 @@ public class SpotService {
         return spotId;
     }
 
-//    public List<SpotDTO> getUserOwnedSpots()
+    // todo вообще я бы этот метод перенес в UserService, но по бинам как будто тут должен быть
+    public List<SpotDTO> getUserOwnedSpots(Long userId) {
+        return spotMapper.toListSpotDTOs(spotRepository.getUserOwnedSpots(userId));
+    }
 }

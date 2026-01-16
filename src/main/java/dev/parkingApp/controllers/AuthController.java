@@ -53,9 +53,8 @@ public class AuthController {
         return new TokenResponse(tokenManager.generateJwtToken(userDetails));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "register")
-    public void addUser(@RequestBody SignInRequest request) {
+    public void createUser(@RequestBody SignInRequest request) {
 
         userDetailsService.createUser(request);
     }

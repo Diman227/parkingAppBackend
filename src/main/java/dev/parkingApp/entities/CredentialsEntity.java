@@ -17,6 +17,7 @@ public class CredentialsEntity {
     @Column(name = "credentials_id")
     private Long id;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

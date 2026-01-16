@@ -3,7 +3,7 @@ package dev.parkingApp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,9 +21,9 @@ public class MessageEntity {
 
     private String message;
 
-    private Date sentAt;
+    private LocalDateTime sentAt;
 
-    private Date readAt;
+    private LocalDateTime readAt;
 
     private Boolean isRead;
 

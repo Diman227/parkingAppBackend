@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TokenRequest {
+
     private String phoneNumber;
     private String password;
 }

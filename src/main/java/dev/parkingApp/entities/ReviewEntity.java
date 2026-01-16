@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,16 +26,16 @@ public class ReviewEntity {
 
     private BigDecimal rate;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewed_spot")
+    @JoinColumn(name = "spot_id")
     private SpotEntity spot;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author")
     private UserEntity author;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageEntity> images;
 }

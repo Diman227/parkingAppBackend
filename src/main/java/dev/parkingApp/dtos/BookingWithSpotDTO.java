@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDTO {
+public class BookingWithSpotDTO {
 
     private Long id;
 
@@ -24,9 +24,10 @@ public class BookingDTO {
 
     private BigDecimal totalPrice;
 
-    private Long spotId;
+    private SpotWithOwnerDTO spot;
 
     private Long renterId;
 
 
 }
+

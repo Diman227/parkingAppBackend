@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class ReviewDTO {
 
     private BigDecimal rate;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     private Long spotId;
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -17,9 +18,9 @@ public class MessageDTO {
 
     private String message;
 
-    private Date sentAt;
+    private LocalDateTime sentAt;
 
-    private Date readAt;
+    private LocalDateTime readAt;
 
     private Boolean isRead;
 
