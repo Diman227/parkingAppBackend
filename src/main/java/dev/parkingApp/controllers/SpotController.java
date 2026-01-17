@@ -5,6 +5,7 @@ import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.services.SpotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +28,14 @@ public class SpotController {
         return spotService.updateSpot(spotDTO);
     }
 
+    // todo тут тоже передавать айди пользователя для security?
     @DeleteMapping(value = "spots/{id}")
     public Long deleteSpot(@PathVariable("id") Long spotId) {
         return spotService.deleteSpot(spotId);
     }
 
     @GetMapping(value = "{userId}/spots")
+    @PreAuthorize("#userId == authentication.principal.userId")
     public List<SpotDTO> getUserOwnedSpots(@PathVariable("userId") Long userId) {
         return spotService.getUserOwnedSpots(userId);
     }

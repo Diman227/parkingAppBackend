@@ -7,12 +7,14 @@ import dev.parkingApp.repositories.CredentialsRepository;
 import dev.parkingApp.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +41,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     public void createUser(SignInRequest request) {
 
-        // transaction?
+        // todo transaction?
         CredentialsEntity credentialsEntity = CredentialsEntity.builder()
                 .phoneNumber(request.getPhoneNumber())
                 .password(new PasswordEntity(request.getPassword()))
@@ -54,5 +56,4 @@ public class AuthUserDetailsService implements UserDetailsService {
 
         userRepository.save(user);
     }
-
 }

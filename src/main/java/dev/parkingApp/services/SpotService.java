@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,10 +21,10 @@ public class SpotService {
     private final UserRepository userRepository;
 
     public SpotDTO addSpot(SpotDTO spotDTO) {
+
         SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
 
-        //todo getRef
-        UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(() -> new RuntimeException("Такого юзера нет"));
+        UserEntity user = userRepository.getReferenceById(spotDTO.getOwnerId());
         spot.setOwner(user);
         spot.setCreatedAt(LocalDateTime.now());
         return spotMapper.toSpotDTO(spotRepository.save(spot));
@@ -33,7 +32,7 @@ public class SpotService {
 
     public SpotDTO updateSpot(SpotDTO spotDTO) {
         SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
-        UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(() -> new RuntimeException("Такого юзера нет"));
+        UserEntity user = userRepository.getReferenceById(spotDTO.getOwnerId());
         spot.setOwner(user);
         return spotMapper.toSpotDTO(spotRepository.save(spot));
     }

@@ -31,7 +31,8 @@ public class BookingService {
 
 //    @Transactional
     public BookingDTO createBooking(BookingDTO bookingDTO){
-        //todo с аннотацией он выполняет запросы и получает эти объекты в прокси, без аннотации нет запросов, но выбрасываются исключения, но в итоге все отрабатывает правильно
+        //todo с аннотацией он выполняет запросы и получает эти данные в прокси, без аннотации нет запросов, но выбрасываются исключения, но в итоге все отрабатывает правильно
+
         SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
         UserEntity renter = userRepository.getReferenceById(bookingDTO.getRenterId());
 
@@ -44,24 +45,27 @@ public class BookingService {
     }
 
     public List<BookingWithSpotDTO> getUserBookings(Long userId) {
+
         return bookingMapper.toListBookingsWithOwnersDTOs(
                 bookingRepository.getUserBookings(userId, LocalDateTime.now())
         );
     }
 
-    // todo как время должно передаваться
     public List<BookingWithSpotDTO> getUserActiveBookings(Long userId) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        return bookingMapper.toListBookingsWithOwnersDTOs(bookingRepository.getUserActiveBookings(userId, currentDate));
+
+        return bookingMapper.toListBookingsWithOwnersDTOs(
+                bookingRepository.getUserActiveBookings(userId, LocalDateTime.now()));
     }
 
     public List<BookingWithSpotDTO> getUserPlannedBookings(Long userId) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        return bookingMapper.toListBookingsWithOwnersDTOs(bookingRepository.getUserPlannedBookings(userId, currentDate));
+
+        return bookingMapper.toListBookingsWithOwnersDTOs(
+                bookingRepository.getUserPlannedBookings(userId, LocalDateTime.now()));
     }
 
     public List<BookingWithSpotDTO> getUserPastBookings(Long userId) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        return bookingMapper.toListBookingsWithOwnersDTOs(bookingRepository.getUserPastBookings(userId, currentDate));
+
+        return bookingMapper.toListBookingsWithOwnersDTOs(
+                bookingRepository.getUserPastBookings(userId, LocalDateTime.now()));
     }
 }
