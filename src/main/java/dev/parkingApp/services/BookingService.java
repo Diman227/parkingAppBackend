@@ -9,6 +9,8 @@ import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.repositories.BookingRepository;
 import dev.parkingApp.repositories.SpotRepository;
 import dev.parkingApp.repositories.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,15 @@ public class BookingService {
 
     private final BookingMapper bookingMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
 //    @Transactional
     public BookingDTO createBooking(BookingDTO bookingDTO){
         //todo с аннотацией он выполняет запросы и получает эти данные в прокси, без аннотации нет запросов, но выбрасываются исключения, но в итоге все отрабатывает правильно
 
         SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
+
         UserEntity renter = userRepository.getReferenceById(bookingDTO.getRenterId());
 
         BookingEntity booking = bookingMapper.toBookingEntity(bookingDTO);

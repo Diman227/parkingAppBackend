@@ -42,7 +42,6 @@ public class SpotService {
         return spotId;
     }
 
-    // todo вообще я бы этот метод перенес в UserService, но по бинам как будто тут должен быть
     public List<SpotDTO> getUserOwnedSpots(Long userId) {
         return spotMapper.toListSpotDTOs(spotRepository.getUserOwnedSpots(userId));
     }

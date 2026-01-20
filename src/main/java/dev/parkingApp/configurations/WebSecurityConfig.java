@@ -39,7 +39,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers(
                         "/api/auth/login",
-                                "/api/auth/register")
+                                "/api/auth/register",
+                                "/actuator/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 // Send a 401 error response if user is not authentic.

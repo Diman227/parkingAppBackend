@@ -12,31 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "*api/base/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "*api/base/spots", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class SpotController {
 
     private final SpotService spotService;
 
-    @PostMapping(value = "spots")
+    @PostMapping
+    @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
     public SpotDTO addSpot(@RequestBody SpotDTO spotDTO) {
         return spotService.addSpot(spotDTO);
     }
 
-    @PutMapping(value = "spots")
+    @PutMapping
+    @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
     public SpotDTO updateSpot(@RequestBody SpotDTO spotDTO) {
         return spotService.updateSpot(spotDTO);
     }
 
-    // todo тут тоже передавать айди пользователя для security?
-    @DeleteMapping(value = "spots/{id}")
+    // todo security?
+    @DeleteMapping(value = "/{id}")
     public Long deleteSpot(@PathVariable("id") Long spotId) {
         return spotService.deleteSpot(spotId);
     }
 
-    @GetMapping(value = "{userId}/spots")
-    @PreAuthorize("#userId == authentication.principal.userId")
-    public List<SpotDTO> getUserOwnedSpots(@PathVariable("userId") Long userId) {
-        return spotService.getUserOwnedSpots(userId);
+    @GetMapping
+    public List<SpotDTO> getUserOwnedSpots(@AuthenticationPrincipal AuthUser principal) {
+        return spotService.getUserOwnedSpots(principal.getUserId());
     }
 }

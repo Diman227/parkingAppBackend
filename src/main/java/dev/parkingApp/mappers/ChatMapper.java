@@ -13,4 +13,6 @@ public interface ChatMapper {
     ChatDTO toChatDTO(ChatEntity chat);
 
     ChatEntity toChatEntity(ChatDTO chatDTO);
+
+    // todo toList
 }

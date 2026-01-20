@@ -40,6 +40,7 @@ public class BookingController {
         return bookingService.getUserPastBookings(userId);
     }
 
+    // todo валидация вроде не нужна , тк preAuthorize выступает тут также будто в роли валидотора, но добавить ограничения в сущности
     @PostMapping(value = "bookings")
     @PreAuthorize("#booking.renterId == authentication.principal.userId")
     public BookingDTO createBooking(BookingDTO bookingDTO) {

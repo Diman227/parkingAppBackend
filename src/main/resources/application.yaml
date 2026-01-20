@@ -41,3 +41,12 @@ minio:
   secret-key: admin
   bucket:
     name: mybucket
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
