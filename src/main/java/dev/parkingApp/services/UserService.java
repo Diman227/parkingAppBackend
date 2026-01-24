@@ -2,6 +2,8 @@ package dev.parkingApp.services;
 
 import dev.parkingApp.dtos.UserDTO;
 import dev.parkingApp.entities.UserEntity;
+import dev.parkingApp.exceptions.SpotNotFoundException;
+import dev.parkingApp.exceptions.UserNotFoundException;
 import dev.parkingApp.mappers.UserMapper;
 import dev.parkingApp.repositories.UserRepository;
 import dev.parkingApp.services.auth.AuthUserDetailsService;
@@ -17,13 +19,17 @@ public class UserService {
 
     public UserDTO getUser(Long credentialsId) {
 
-        UserEntity user = userRepository.getUserByCredentials(credentialsId).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserEntity user = userRepository.getUserByCredentials(credentialsId).orElseThrow(
+                () -> new UserNotFoundException("User with credentialsId - " + credentialsId + " - wasn't found!"));
         return userMapper.toUserDTO(user);
+
     }
 
     public UserDTO editUserInfo(UserDTO userDTO) {
 
-        UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow();
+        UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow(
+                () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!")
+        );
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());

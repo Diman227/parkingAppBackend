@@ -3,6 +3,7 @@ package dev.parkingApp.configurations;
 import dev.parkingApp.services.auth.AuthUserDetailsService;
 import dev.parkingApp.services.auth.JwtAuthenticationEntryPoint;
 import dev.parkingApp.services.auth.JwtFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,11 +44,16 @@ public class WebSecurityConfig {
                                 "/actuator/**")
                         .permitAll()
                         .anyRequest().authenticated())
-                // Send a 401 error response if user is not authentic.
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                // no session management
+
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler((request,response,accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"" + accessDeniedException.getMessage() + "\"}");
+                        }))
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // filter the request and add authentication token
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

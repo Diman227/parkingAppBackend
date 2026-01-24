@@ -3,6 +3,7 @@ package dev.parkingApp.services.auth;
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.dtos.auth.SignInRequest;
 import dev.parkingApp.entities.*;
+import dev.parkingApp.exceptions.UserNotFoundException;
 import dev.parkingApp.repositories.CredentialsRepository;
 import dev.parkingApp.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +28,7 @@ public class AuthUserDetailsService implements UserDetailsService {
     @Override
     public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.getUserByUsername(username).orElseThrow(
-                () -> new UsernameNotFoundException(String.format("User %s not found", username))
+                () -> new UserNotFoundException(String.format("User with name %s not found!", username))
         );
 
         return AuthUser.builder()
@@ -39,9 +41,9 @@ public class AuthUserDetailsService implements UserDetailsService {
                 .build();
     }
 
+    @Transactional
     public void createUser(SignInRequest request) {
 
-        // todo transaction?
         CredentialsEntity credentialsEntity = CredentialsEntity.builder()
                 .phoneNumber(request.getPhoneNumber())
                 .password(new PasswordEntity(request.getPassword()))

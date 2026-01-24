@@ -15,8 +15,9 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatMapper chatMapper;
     
-    public List<ChatDTO> getUserChats(Long UserId) {
-        return null;
+    public List<ChatDTO> getUserChats(Long userId) {
+
+        return chatMapper.toListChatDTOs(chatRepository.getUserChats(userId));
     }
     
 }

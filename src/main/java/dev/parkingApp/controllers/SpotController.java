@@ -36,8 +36,13 @@ public class SpotController {
         return spotService.deleteSpot(spotId);
     }
 
-    @GetMapping
+    @GetMapping("/user")
     public List<SpotDTO> getUserOwnedSpots(@AuthenticationPrincipal AuthUser principal) {
         return spotService.getUserOwnedSpots(principal.getUserId());
+    }
+
+    @GetMapping
+    public List<SpotDTO> getAllSpots() {
+        return spotService.getAllSpots();
     }
 }

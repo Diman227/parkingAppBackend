@@ -7,9 +7,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/parkingApp
-    username: postgres
-    password: zaq1@WSX
+    url: jdbc:postgresql://localhost:5433/parking_service
+    username: admin
+    password: admin
 
   jpa:
     hibernate:
@@ -36,11 +36,10 @@ token:
     key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
 
 minio:
-  url: http://localhost:9000
-  access-key: admin
-  secret-key: admin
-  bucket:
-    name: mybucket
+  endpoint: http://localhost:9000
+  access-key: admin12345
+  secret-key: admin12345
+  bucket-name: pictures
 
 management:
   endpoints:

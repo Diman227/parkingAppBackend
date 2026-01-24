@@ -3,6 +3,7 @@ package dev.parkingApp.services;
 import dev.parkingApp.dtos.SpotDTO;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
+import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.mappers.SpotMapper;
 import dev.parkingApp.repositories.SpotRepository;
 import dev.parkingApp.repositories.UserRepository;
@@ -31,9 +32,12 @@ public class SpotService {
     }
 
     public SpotDTO updateSpot(SpotDTO spotDTO) {
-        SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
-        UserEntity user = userRepository.getReferenceById(spotDTO.getOwnerId());
-        spot.setOwner(user);
+
+        SpotEntity spot = spotRepository.findById(spotDTO.getId()).orElseThrow(() -> new SpotNotFoundException("Spot with id - " + spotDTO.getId() + " - wasn't found!"));
+
+        spot.setDescription(spotDTO.getDescription());
+        spot.setPrice(spotDTO.getPrice());
+
         return spotMapper.toSpotDTO(spotRepository.save(spot));
     }
 
@@ -44,5 +48,9 @@ public class SpotService {
 
     public List<SpotDTO> getUserOwnedSpots(Long userId) {
         return spotMapper.toListSpotDTOs(spotRepository.getUserOwnedSpots(userId));
+    }
+
+    public List<SpotDTO> getAllSpots() {
+        return spotMapper.toListSpotDTOs(spotRepository.getAllSpots());
     }
 }

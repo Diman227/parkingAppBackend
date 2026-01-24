@@ -4,6 +4,7 @@ import dev.parkingApp.dtos.ReviewDTO;
 import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
+import dev.parkingApp.exceptions.ReviewNotFoundException;
 import dev.parkingApp.mappers.ReviewMapper;
 import dev.parkingApp.repositories.ReviewRepository;
 import dev.parkingApp.repositories.SpotRepository;
@@ -28,6 +29,7 @@ public class ReviewService {
         // todo add images
         // todo какая-то проверка на то, была ли у пользователя аренда этого места, чтоб он мог оставить отзыв
         ReviewEntity review = reviewMapper.toReviewEntity(reviewDTO);
+
         SpotEntity spot = spotRepository.getReferenceById(reviewDTO.getSpotId());
         UserEntity author = userRepository.getReferenceById(reviewDTO.getAuthorId());
 
@@ -37,13 +39,14 @@ public class ReviewService {
         return reviewMapper.toReviewDTO(reviewRepository.save(review));
     }
 
+    // todo я напрямую получаю список, но не обработываю исключение на существование места
     public List<ReviewDTO> getSpotReviews(Long spotId) {
         return reviewMapper.toListReviewDTOs(reviewRepository.getSpotReviews(spotId));
     }
 
     public ReviewDTO updateReview(ReviewDTO reviewDTO) {
 
-        ReviewEntity review = reviewRepository.findById(reviewDTO.getId()).orElseThrow(() -> new RuntimeException("Отзыв не найден"));
+        ReviewEntity review = reviewRepository.findById(reviewDTO.getId()).orElseThrow(() -> new ReviewNotFoundException("Review with id - " + reviewDTO.getId() + "- wasn't found"));
 
         review.setRate(reviewDTO.getRate());
         review.setMessage(reviewDTO.getMessage());

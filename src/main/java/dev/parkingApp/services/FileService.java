@@ -25,10 +25,10 @@ public class FileService {
 
     private final MinioClient minioClient;
 
-    @Value("${minio.bucket.name}")
+    @Value("${minio.bucket-name}")
     private String bucketName;
 
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(MultipartFile file) {
         try {
             String fileName = file.getOriginalFilename();
             minioClient.putObject(
@@ -45,7 +45,7 @@ public class FileService {
         }
     }
 
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> downloadFile(String filename) {
         try {
             InputStream stream = minioClient.getObject(
                     GetObjectArgs.builder().bucket(bucketName).object(filename).build()
@@ -58,7 +58,7 @@ public class FileService {
         }
     }
 
-    public ResponseEntity<String> deleteFile(@PathVariable String filename) {
+    public ResponseEntity<String> deleteFile(String filename) {
         try {
             minioClient.removeObject(
                     RemoveObjectArgs.builder().bucket(bucketName).object(filename).build()
