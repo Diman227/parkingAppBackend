@@ -1,5 +1,6 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.response;
 
+import dev.parkingApp.dtos.request.ReviewRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpotDTO {
+public class SpotResponse {
 
     private Long id;
 
@@ -27,11 +28,11 @@ public class SpotDTO {
 
     private LocalDateTime createdAt;
 
-    private CoordinatesDTO location;
+    private CoordinatesResponse location;
 
-    private Long ownerId;
+    private UserResponse owner;
 
-    private List<ReviewDTO> reviews;
+    private List<ReviewRequest> reviews;
 
     // todo list с картинками
 

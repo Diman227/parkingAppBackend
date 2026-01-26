@@ -1,6 +1,6 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.ReviewDTO;
+import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
@@ -24,7 +24,7 @@ public class ReviewService {
 
     private final ReviewMapper reviewMapper;
 
-    public ReviewDTO addReview(ReviewDTO reviewDTO) {
+    public ReviewRequest addReview(ReviewRequest reviewDTO) {
 
         // todo add images
         // todo какая-то проверка на то, была ли у пользователя аренда этого места, чтоб он мог оставить отзыв
@@ -40,11 +40,11 @@ public class ReviewService {
     }
 
     // todo я напрямую получаю список, но не обработываю исключение на существование места
-    public List<ReviewDTO> getSpotReviews(Long spotId) {
+    public List<ReviewRequest> getSpotReviews(Long spotId) {
         return reviewMapper.toListReviewDTOs(reviewRepository.getSpotReviews(spotId));
     }
 
-    public ReviewDTO updateReview(ReviewDTO reviewDTO) {
+    public ReviewRequest updateReview(ReviewRequest reviewDTO) {
 
         ReviewEntity review = reviewRepository.findById(reviewDTO.getId()).orElseThrow(() -> new ReviewNotFoundException("Review with id - " + reviewDTO.getId() + "- wasn't found"));
 

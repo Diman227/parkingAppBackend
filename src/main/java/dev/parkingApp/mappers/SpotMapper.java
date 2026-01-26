@@ -1,8 +1,7 @@
 package dev.parkingApp.mappers;
 
-import dev.parkingApp.dtos.CoordinatesDTO;
-import dev.parkingApp.dtos.SpotDTO;
-import dev.parkingApp.dtos.SpotWithOwnerDTO;
+import dev.parkingApp.dtos.request.SpotRequest;
+import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,13 +12,13 @@ import java.util.List;
 public interface SpotMapper {
 
     @Mapping(target = "ownerId", source = "owner.id")
-    SpotDTO toSpotDTO(SpotEntity spot);
+    SpotRequest toSpotDTO(SpotEntity spot);
 
-    SpotEntity toSpotEntity(SpotDTO spotDTO);
+    SpotEntity toSpotEntity(SpotRequest spotDTO);
 
-    List<SpotDTO> toListSpotDTOs(List<SpotEntity> spots);
+    List<SpotRequest> toListSpotDTOs(List<SpotEntity> spots);
 
-    List<SpotEntity> toListSpotEntities(List<SpotDTO> spots);
+    List<SpotEntity> toListSpotEntities(List<SpotRequest> spots);
 
-    SpotWithOwnerDTO toSpotWithOwnerDTO(SpotEntity spot);
+    SpotResponse toSpotWithOwnerDTO(SpotEntity spot);
 }

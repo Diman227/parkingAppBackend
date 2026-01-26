@@ -1,7 +1,7 @@
 package dev.parkingApp.controllers;
 
-import dev.parkingApp.dtos.BookingDTO;
-import dev.parkingApp.dtos.BookingWithSpotDTO;
+import dev.parkingApp.dtos.request.BookingRequest;
+import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.services.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,32 +18,32 @@ public class BookingController {
 
     @GetMapping(value = "{userId}/bookings")
     @PreAuthorize("#userId == authentication.principal.userId")
-    public List<BookingWithSpotDTO> getUserBookings(@PathVariable("userId") Long userId) {
+    public List<BookingResponse> getUserBookings(@PathVariable("userId") Long userId) {
         return bookingService.getUserBookings(userId);
     }
 
     @GetMapping(value = "{userId}/activeBookings")
     @PreAuthorize("#userId == authentication.principal.userId")
-    public List<BookingWithSpotDTO> getUserActiveBookings(@PathVariable("userId") Long userId) {
+    public List<BookingResponse> getUserActiveBookings(@PathVariable("userId") Long userId) {
         return bookingService.getUserActiveBookings(userId);
     }
 
     @GetMapping(value = "{userId}/plannedBookings")
     @PreAuthorize("#userId == authentication.principal.userId")
-    public List<BookingWithSpotDTO> getUserPlannedBookings(@PathVariable("userId") Long userId) {
+    public List<BookingResponse> getUserPlannedBookings(@PathVariable("userId") Long userId) {
         return bookingService.getUserPlannedBookings(userId);
     }
 
     @GetMapping(value = "{userId}/pastBookings")
     @PreAuthorize("#userId == authentication.principal.userId")
-    public List<BookingWithSpotDTO> getUserPastBookings(@PathVariable("userId") Long userId) {
+    public List<BookingResponse> getUserPastBookings(@PathVariable("userId") Long userId) {
         return bookingService.getUserPastBookings(userId);
     }
 
     // todo валидация вроде не нужна , тк preAuthorize выступает тут также будто в роли валидотора, но добавить ограничения в сущности
     @PostMapping(value = "bookings")
     @PreAuthorize("#booking.renterId == authentication.principal.userId")
-    public BookingDTO createBooking(BookingDTO bookingDTO) {
+    public BookingResponse createBooking(BookingRequest bookingDTO) {
         return bookingService.createBooking(bookingDTO);
     }
 

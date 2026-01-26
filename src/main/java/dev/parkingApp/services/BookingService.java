@@ -1,7 +1,7 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.BookingDTO;
-import dev.parkingApp.dtos.BookingWithSpotDTO;
+import dev.parkingApp.dtos.request.BookingRequest;
+import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.entities.BookingEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
@@ -30,7 +30,7 @@ public class BookingService {
     private final BookingMapper bookingMapper;
 
     @Transactional
-    public BookingDTO createBooking(BookingDTO bookingDTO){
+    public BookingResponse createBooking(BookingRequest bookingDTO){
         //todo с аннотацией он выполняет запросы и получает эти данные в прокси, без аннотации нет запросов, но выбрасываются исключения, но в итоге все отрабатывает правильно
         // по сути, как я понял, из-за отладки происходит запрос в бд, тк интерфейс отладки хочет отобразить объект и это считается обращением к его полям
         SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
@@ -45,26 +45,26 @@ public class BookingService {
         return bookingMapper.toBookingDTO(bookingRepository.save(booking));
     }
 
-    public List<BookingWithSpotDTO> getUserBookings(Long userId) {
+    public List<BookingResponse> getUserBookings(Long userId) {
 
         return bookingMapper.toListBookingsWithOwnersDTOs(
                 bookingRepository.getUserBookings(userId, LocalDateTime.now())
         );
     }
 
-    public List<BookingWithSpotDTO> getUserActiveBookings(Long userId) {
+    public List<BookingResponse> getUserActiveBookings(Long userId) {
 
         return bookingMapper.toListBookingsWithOwnersDTOs(
                 bookingRepository.getUserActiveBookings(userId, LocalDateTime.now()));
     }
 
-    public List<BookingWithSpotDTO> getUserPlannedBookings(Long userId) {
+    public List<BookingResponse> getUserPlannedBookings(Long userId) {
 
         return bookingMapper.toListBookingsWithOwnersDTOs(
                 bookingRepository.getUserPlannedBookings(userId, LocalDateTime.now()));
     }
 
-    public List<BookingWithSpotDTO> getUserPastBookings(Long userId) {
+    public List<BookingResponse> getUserPastBookings(Long userId) {
 
         return bookingMapper.toListBookingsWithOwnersDTOs(
                 bookingRepository.getUserPastBookings(userId, LocalDateTime.now()));

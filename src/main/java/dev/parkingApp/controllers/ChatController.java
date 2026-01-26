@@ -1,6 +1,6 @@
 package dev.parkingApp.controllers;
 
-import dev.parkingApp.dtos.ChatDTO;
+import dev.parkingApp.dtos.request.ChatRequest;
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.services.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @GetMapping
-    public List<ChatDTO> getUserChats(@AuthenticationPrincipal AuthUser principal) {
+    public List<ChatRequest> getUserChats(@AuthenticationPrincipal AuthUser principal) {
         return chatService.getUserChats(principal.getUserId());
     }
 }

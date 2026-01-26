@@ -1,4 +1,4 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingWithSpotDTO {
+public class BookingResponse {
 
     private Long id;
 
@@ -24,7 +24,7 @@ public class BookingWithSpotDTO {
 
     private BigDecimal totalPrice;
 
-    private SpotWithOwnerDTO spot;
+    private SpotResponse spot;
 
     private Long renterId;
 

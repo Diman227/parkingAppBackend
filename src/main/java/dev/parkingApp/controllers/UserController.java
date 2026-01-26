@@ -1,6 +1,6 @@
 package dev.parkingApp.controllers;
 
-import dev.parkingApp.dtos.UserDTO;
+import dev.parkingApp.dtos.response.UserResponse;
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(value = "user")
-    public UserDTO getUser(@AuthenticationPrincipal AuthUser principal) {
+    public UserResponse getUser(@AuthenticationPrincipal AuthUser principal) {
         return userService.getUser(principal.getCredentialsId());
     }
 
     @PutMapping(value = "user")
     @PreAuthorize("#userDTO.id == authentication.principal.userId")
-    public UserDTO editUserInfo(@RequestBody UserDTO userDTO) {
+    public UserResponse editUserInfo(@RequestBody UserResponse userDTO) {
         return userService.editUserInfo(userDTO);
     }
 }

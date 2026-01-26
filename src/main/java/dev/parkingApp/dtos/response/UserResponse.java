@@ -1,4 +1,4 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserResponse {
 
     private Long id;
 

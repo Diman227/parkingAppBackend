@@ -1,6 +1,6 @@
 package dev.parkingApp.mappers;
 
-import dev.parkingApp.dtos.ChatDTO;
+import dev.parkingApp.dtos.request.ChatRequest;
 import dev.parkingApp.entities.ChatEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,12 +12,11 @@ public interface ChatMapper {
 
     @Mapping(target = "ownerId", source = "owner.id")
     @Mapping(target = "consumerId", source = "consumer.id")
-    ChatDTO toChatDTO(ChatEntity chat);
+    ChatRequest toChatDTO(ChatEntity chat);
 
-    ChatEntity toChatEntity(ChatDTO chatDTO);
+    ChatEntity toChatEntity(ChatRequest chatDTO);
 
-    List<ChatDTO> toListChatDTOs(List<ChatEntity> chats);
+    List<ChatRequest> toListChatDTOs(List<ChatEntity> chats);
 
-    List<ChatEntity> toListChatEntities(List<ChatDTO> chats);
-    // todo toList
+    List<ChatEntity> toListChatEntities(List<ChatRequest> chats);
 }

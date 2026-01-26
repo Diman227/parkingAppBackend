@@ -1,7 +1,7 @@
 package dev.parkingApp.mappers;
 
-import dev.parkingApp.dtos.BookingDTO;
-import dev.parkingApp.dtos.BookingWithSpotDTO;
+import dev.parkingApp.dtos.request.BookingRequest;
+import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.entities.BookingEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,15 +13,15 @@ public interface BookingMapper {
 
     @Mapping(target = "spotId", source = "spot.id")
     @Mapping(target = "renterId", source = "renter.id")
-    BookingDTO toBookingDTO(BookingEntity booking);
+    BookingRequest toBookingDTO(BookingEntity booking);
 
-    BookingEntity toBookingEntity(BookingDTO bookingDTO);
+    BookingEntity toBookingEntity(BookingRequest bookingDTO);
 
-    List<BookingDTO> toListBookingDTOs(List<BookingEntity> bookings);
+    List<BookingRequest> toListBookingDTOs(List<BookingEntity> bookings);
 
-    List<BookingEntity> toListBookingEntities(List<BookingDTO> bookingDTOs);
+    List<BookingEntity> toListBookingEntities(List<BookingRequest> bookingDTOs);
 
-    BookingWithSpotDTO toBookingWithOwnerDTO(BookingEntity booking);
+    BookingResponse toBookingWithOwnerDTO(BookingEntity booking);
 
-    List<BookingWithSpotDTO> toListBookingsWithOwnersDTOs(List<BookingEntity> bookingEntities);
+    List<BookingResponse> toListBookingsWithOwnersDTOs(List<BookingEntity> bookingEntities);
 }

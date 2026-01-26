@@ -1,6 +1,6 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.ChatDTO;
+import dev.parkingApp.dtos.request.ChatRequest;
 import dev.parkingApp.mappers.ChatMapper;
 import dev.parkingApp.repositories.ChatRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatMapper chatMapper;
     
-    public List<ChatDTO> getUserChats(Long userId) {
+    public List<ChatRequest> getUserChats(Long userId) {
 
         return chatMapper.toListChatDTOs(chatRepository.getUserChats(userId));
     }

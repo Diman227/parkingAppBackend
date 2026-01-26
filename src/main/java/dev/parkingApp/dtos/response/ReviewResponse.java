@@ -1,9 +1,8 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.response;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +14,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDTO {
+@AllArgsConstructor
+public class ReviewResponse {
 
     private Long id;
 
-    @Length(max = 256, message = "Максимальный объем отзыва - 256 символов!")
+    @Length(max = 256, message = "Максимальный объем отзыва - 256 символов")
     private String message;
 
     @NotNull
@@ -32,12 +31,10 @@ public class ReviewDTO {
     private LocalDateTime createdAt;
 
     @NotNull
-    @Positive
-    private Long spotId;
+    private UserResponse spot;
 
     @NotNull
-    @Positive
-    private Long authorId;
+    private UserResponse author;
 
     // todo добавить list картинок
 }

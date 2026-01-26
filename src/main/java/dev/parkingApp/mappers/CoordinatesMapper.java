@@ -1,14 +1,13 @@
 package dev.parkingApp.mappers;
 
-import dev.parkingApp.dtos.CoordinatesDTO;
+import dev.parkingApp.dtos.response.CoordinatesResponse;
 import dev.parkingApp.entities.CoordinatesEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CoordinatesMapper {
 
-    CoordinatesDTO toCoordinatesDTO(CoordinatesEntity coordinates);
+    CoordinatesResponse toCoordinatesDTO(CoordinatesEntity coordinates);
 
-    CoordinatesEntity toCoordinatesEntity(CoordinatesDTO coordinatesDTO);
+    CoordinatesEntity toCoordinatesEntity(CoordinatesResponse coordinatesDTO);
 }

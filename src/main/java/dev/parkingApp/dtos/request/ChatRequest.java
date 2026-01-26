@@ -1,4 +1,4 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatDTO {
+public class ChatRequest {
 
     private Long id;
 
@@ -19,5 +19,5 @@ public class ChatDTO {
 
     private Long consumerId;
 
-    private List<MessageDTO> messages;
+    private List<MessageRequest> messages;
 }

@@ -20,7 +20,6 @@ public class MinioConfig {
     @Bean
     public MinioClient minioClient() {
         return MinioClient.builder()
-                //todo application.yaml
                 .endpoint(endpoint)
                 .credentials(accessKey,secretKey)
                 .build();

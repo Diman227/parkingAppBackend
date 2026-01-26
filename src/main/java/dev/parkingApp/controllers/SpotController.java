@@ -1,6 +1,6 @@
 package dev.parkingApp.controllers;
 
-import dev.parkingApp.dtos.SpotDTO;
+import dev.parkingApp.dtos.request.SpotRequest;
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.services.SpotService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ public class SpotController {
 
     @PostMapping
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
-    public SpotDTO addSpot(@RequestBody SpotDTO spotDTO) {
+    public SpotRequest addSpot(@RequestBody SpotRequest spotDTO) {
         return spotService.addSpot(spotDTO);
     }
 
     @PutMapping
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
-    public SpotDTO updateSpot(@RequestBody SpotDTO spotDTO) {
+    public SpotRequest updateSpot(@RequestBody SpotRequest spotDTO) {
         return spotService.updateSpot(spotDTO);
     }
 
@@ -37,12 +37,12 @@ public class SpotController {
     }
 
     @GetMapping("/user")
-    public List<SpotDTO> getUserOwnedSpots(@AuthenticationPrincipal AuthUser principal) {
+    public List<SpotRequest> getUserOwnedSpots(@AuthenticationPrincipal AuthUser principal) {
         return spotService.getUserOwnedSpots(principal.getUserId());
     }
 
     @GetMapping
-    public List<SpotDTO> getAllSpots() {
+    public List<SpotRequest> getAllSpots() {
         return spotService.getAllSpots();
     }
 }

@@ -1,6 +1,6 @@
 package dev.parkingApp.mappers;
 
-import dev.parkingApp.dtos.ReviewDTO;
+import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.entities.ReviewEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,12 +12,12 @@ public interface ReviewMapper {
 
     @Mapping(target = "spotId", source = "spot.id")
     @Mapping(target = "authorId", source = "author.id")
-    ReviewDTO toReviewDTO(ReviewEntity review);
+    ReviewRequest toReviewDTO(ReviewEntity review);
 
-    ReviewEntity toReviewEntity(ReviewDTO reviewDTO);
+    ReviewEntity toReviewEntity(ReviewRequest reviewDTO);
 
-    List<ReviewDTO> toListReviewDTOs(List<ReviewEntity> reviews);
+    List<ReviewRequest> toListReviewDTOs(List<ReviewEntity> reviews);
 
-    List<ReviewEntity> toListReviewEntities(List<ReviewDTO> reviews);
+    List<ReviewEntity> toListReviewEntities(List<ReviewRequest> reviews);
 
 }

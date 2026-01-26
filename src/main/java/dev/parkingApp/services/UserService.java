@@ -1,12 +1,10 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.UserDTO;
+import dev.parkingApp.dtos.response.UserResponse;
 import dev.parkingApp.entities.UserEntity;
-import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.exceptions.UserNotFoundException;
 import dev.parkingApp.mappers.UserMapper;
 import dev.parkingApp.repositories.UserRepository;
-import dev.parkingApp.services.auth.AuthUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserDTO getUser(Long credentialsId) {
+    public UserResponse getUser(Long credentialsId) {
 
         UserEntity user = userRepository.getUserByCredentials(credentialsId).orElseThrow(
                 () -> new UserNotFoundException("User with credentialsId - " + credentialsId + " - wasn't found!"));
@@ -25,7 +23,7 @@ public class UserService {
 
     }
 
-    public UserDTO editUserInfo(UserDTO userDTO) {
+    public UserResponse editUserInfo(UserResponse userDTO) {
 
         UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow(
                 () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!")

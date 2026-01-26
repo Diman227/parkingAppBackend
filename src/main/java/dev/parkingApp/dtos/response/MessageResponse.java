@@ -1,4 +1,4 @@
-package dev.parkingApp.dtos;
+package dev.parkingApp.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
+@AllArgsConstructor
+public class MessageResponse {
 
     private Long id;
 
@@ -28,7 +27,7 @@ public class MessageDTO {
 
     private Long authorId;
 
-    private Long attachmentId;
+    private ImageResponse attachment;
 
     private Long replyToMessageId;
 }
