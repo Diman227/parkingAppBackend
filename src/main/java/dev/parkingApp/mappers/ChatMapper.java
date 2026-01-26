@@ -1,22 +1,25 @@
 package dev.parkingApp.mappers;
 
 import dev.parkingApp.dtos.request.ChatRequest;
+import dev.parkingApp.dtos.response.ChatResponse;
 import dev.parkingApp.entities.ChatEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {MessageMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, MessageMapper.class})
 public interface ChatMapper {
 
-    @Mapping(target = "ownerId", source = "owner.id")
-    @Mapping(target = "consumerId", source = "consumer.id")
-    ChatRequest toChatDTO(ChatEntity chat);
+    // Entity ---> Response
 
-    ChatEntity toChatEntity(ChatRequest chatDTO);
+    ChatResponse toChatResponse(ChatEntity chat);
 
-    List<ChatRequest> toListChatDTOs(List<ChatEntity> chats);
+    List<ChatResponse> toListChatResponses(List<ChatEntity> chats);
 
-    List<ChatEntity> toListChatEntities(List<ChatRequest> chats);
+    // Request ---> Entity
+
+    // todo check mapping
+    ChatEntity toChatEntity(ChatRequest chatRequest);
+
 }

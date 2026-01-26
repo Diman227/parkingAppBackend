@@ -19,7 +19,7 @@ public class UserService {
 
         UserEntity user = userRepository.getUserByCredentials(credentialsId).orElseThrow(
                 () -> new UserNotFoundException("User with credentialsId - " + credentialsId + " - wasn't found!"));
-        return userMapper.toUserDTO(user);
+        return userMapper.toUserResponse(user);
 
     }
 
@@ -32,6 +32,6 @@ public class UserService {
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
 
-        return userMapper.toUserDTO(userRepository.save(user));
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 }

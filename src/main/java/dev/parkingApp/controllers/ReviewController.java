@@ -1,6 +1,7 @@
 package dev.parkingApp.controllers;
 
 import dev.parkingApp.dtos.request.ReviewRequest;
+import dev.parkingApp.dtos.response.ReviewResponse;
 import dev.parkingApp.services.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -17,19 +18,19 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping(value = "/{spotId}")
-    public List<ReviewRequest> getSpotReviews(@PathVariable("spotId") Long spotId) {
+    public List<ReviewResponse> getSpotReviews(@PathVariable("spotId") Long spotId) {
         return reviewService.getSpotReviews(spotId);
     }
 
     @PostMapping
     @PreAuthorize("#reviewDTO.authorId == authentication.principal.userId")
-    public ReviewRequest createReview(@RequestBody ReviewRequest reviewDTO) {
+    public ReviewResponse createReview(@RequestBody ReviewRequest reviewDTO) {
         return reviewService.addReview(reviewDTO);
     }
 
     @PutMapping
     @PreAuthorize("#reviewDTO.authorId == authentication.principal.userId")
-    public ReviewRequest updateReview(@RequestBody ReviewRequest reviewDTO) {
+    public ReviewResponse updateReview(@RequestBody ReviewRequest reviewDTO) {
         return reviewService.updateReview(reviewDTO);
     }
 }

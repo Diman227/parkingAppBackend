@@ -1,6 +1,7 @@
 package dev.parkingApp.mappers;
 
 import dev.parkingApp.dtos.request.ReviewRequest;
+import dev.parkingApp.dtos.response.ReviewResponse;
 import dev.parkingApp.entities.ReviewEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,14 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
 
-    @Mapping(target = "spotId", source = "spot.id")
-    @Mapping(target = "authorId", source = "author.id")
-    ReviewRequest toReviewDTO(ReviewEntity review);
+    // Entity --> Response
 
-    ReviewEntity toReviewEntity(ReviewRequest reviewDTO);
+    ReviewResponse toReviewResponse(ReviewEntity review);
 
-    List<ReviewRequest> toListReviewDTOs(List<ReviewEntity> reviews);
+    List<ReviewResponse> toListReviewResponses(List<ReviewEntity> reviews);
 
-    List<ReviewEntity> toListReviewEntities(List<ReviewRequest> reviews);
+    // Request --> Entity
+
+    // todo check mapping
+    ReviewEntity toReviewEntity(ReviewRequest reviewRequest);
 
 }

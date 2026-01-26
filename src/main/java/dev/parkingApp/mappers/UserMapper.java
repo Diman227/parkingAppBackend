@@ -7,10 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-//    @Mapping(target = "phoneNumber", source = "credentials.phoneNumber")
-//    @Mapping(target = "credentialsId", source = "credentials.id")
-    UserResponse toUserDTO(UserEntity userEntity);
+    UserResponse toUserResponse(UserEntity userEntity);
 
-    UserEntity toUserEntity(UserResponse userDTO);
-
+    UserEntity toUserEntity(UserResponse userResponse);
 }

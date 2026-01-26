@@ -42,31 +42,31 @@ public class BookingService {
         booking.setSpot(spot);
         booking.setRenter(renter);
 
-        return bookingMapper.toBookingDTO(bookingRepository.save(booking));
+        return bookingMapper.toBookingResponse(bookingRepository.save(booking));
     }
 
     public List<BookingResponse> getUserBookings(Long userId) {
 
-        return bookingMapper.toListBookingsWithOwnersDTOs(
+        return bookingMapper.toListBookingResponses(
                 bookingRepository.getUserBookings(userId, LocalDateTime.now())
         );
     }
 
     public List<BookingResponse> getUserActiveBookings(Long userId) {
 
-        return bookingMapper.toListBookingsWithOwnersDTOs(
+        return bookingMapper.toListBookingResponses(
                 bookingRepository.getUserActiveBookings(userId, LocalDateTime.now()));
     }
 
     public List<BookingResponse> getUserPlannedBookings(Long userId) {
 
-        return bookingMapper.toListBookingsWithOwnersDTOs(
+        return bookingMapper.toListBookingResponses(
                 bookingRepository.getUserPlannedBookings(userId, LocalDateTime.now()));
     }
 
     public List<BookingResponse> getUserPastBookings(Long userId) {
 
-        return bookingMapper.toListBookingsWithOwnersDTOs(
+        return bookingMapper.toListBookingResponses(
                 bookingRepository.getUserPastBookings(userId, LocalDateTime.now()));
     }
 }

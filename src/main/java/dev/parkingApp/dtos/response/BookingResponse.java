@@ -26,7 +26,7 @@ public class BookingResponse {
 
     private SpotResponse spot;
 
-    private Long renterId;
+    private UserResponse renter;
 
 
 }

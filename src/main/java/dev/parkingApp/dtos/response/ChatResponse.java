@@ -20,5 +20,5 @@ public class ChatResponse {
 
     private UserResponse consumer;
 
-    private List<MessageRequest> messages;
+    private List<MessageResponse> messages;
 }

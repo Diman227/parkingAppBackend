@@ -32,7 +32,7 @@ public class SpotResponse {
 
     private UserResponse owner;
 
-    private List<ReviewRequest> reviews;
+    private List<ReviewResponse> reviews;
 
     // todo list с картинками
 

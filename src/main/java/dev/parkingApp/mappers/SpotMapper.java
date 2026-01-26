@@ -11,14 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CoordinatesMapper.class, ReviewMapper.class, UserMapper.class})
 public interface SpotMapper {
 
-    @Mapping(target = "ownerId", source = "owner.id")
-    SpotRequest toSpotDTO(SpotEntity spot);
+    // Entity ---> Response
 
-    SpotEntity toSpotEntity(SpotRequest spotDTO);
+    SpotResponse toSpotResponse(SpotEntity spot);
 
-    List<SpotRequest> toListSpotDTOs(List<SpotEntity> spots);
+    List<SpotResponse> toListSpotResponses(List<SpotEntity> spots);
 
-    List<SpotEntity> toListSpotEntities(List<SpotRequest> spots);
+    // Request ---> Entity
 
-    SpotResponse toSpotWithOwnerDTO(SpotEntity spot);
+    // todo check mapping
+    SpotEntity toSpotEntity(SpotRequest spotRequest);
+
 }

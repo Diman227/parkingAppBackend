@@ -11,17 +11,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = { SpotMapper.class })
 public interface BookingMapper {
 
-    @Mapping(target = "spotId", source = "spot.id")
-    @Mapping(target = "renterId", source = "renter.id")
-    BookingRequest toBookingDTO(BookingEntity booking);
+    // Entity ---> Response
 
-    BookingEntity toBookingEntity(BookingRequest bookingDTO);
+    BookingResponse toBookingResponse(BookingEntity booking);
 
-    List<BookingRequest> toListBookingDTOs(List<BookingEntity> bookings);
+    List<BookingResponse> toListBookingResponses(List<BookingEntity> bookings);
 
-    List<BookingEntity> toListBookingEntities(List<BookingRequest> bookingDTOs);
+    // Request ---> Entity
 
-    BookingResponse toBookingWithOwnerDTO(BookingEntity booking);
+    // todo check mapping
+    BookingEntity toBookingEntity(BookingRequest bookingRequest);
 
-    List<BookingResponse> toListBookingsWithOwnersDTOs(List<BookingEntity> bookingEntities);
 }
