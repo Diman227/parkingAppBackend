@@ -31,7 +31,6 @@ public class SpotController {
         return spotService.updateSpot(spotDTO);
     }
 
-    // todo security?
     @DeleteMapping(value = "/{id}")
     public Long deleteSpot(@PathVariable("id") Long spotId) {
         return spotService.deleteSpot(spotId);

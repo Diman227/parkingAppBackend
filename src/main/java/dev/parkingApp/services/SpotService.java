@@ -26,9 +26,12 @@ public class SpotService {
 
         SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
 
-        UserEntity user = userRepository.getReferenceById(spotDTO.getOwnerId());
+        UserEntity user = userRepository.findById(spotDTO.getOwnerId()).orElseThrow(
+                () -> new SpotNotFoundException("Пользователь не найден с id - " + spotDTO.getOwnerId()));
+
         spot.setOwner(user);
         spot.setCreatedAt(LocalDateTime.now());
+
         return spotMapper.toSpotResponse(spotRepository.save(spot));
     }
 

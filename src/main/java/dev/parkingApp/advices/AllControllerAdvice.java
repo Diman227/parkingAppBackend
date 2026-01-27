@@ -36,4 +36,10 @@ public class AllControllerAdvice {
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserHaveNotPermissionException.class)
+    public ResponseEntity<ExceptionResponse> handleUserHaveNotPermissionException(UserHaveNotPermissionException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

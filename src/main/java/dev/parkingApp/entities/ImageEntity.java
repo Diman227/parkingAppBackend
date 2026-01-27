@@ -19,7 +19,7 @@ public class ImageEntity {
 
     private String externalId;
 
-    // todo правильна ли такая реализация?
+    // todo реализация?
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spot_id")

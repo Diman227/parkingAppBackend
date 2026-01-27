@@ -39,7 +39,6 @@ public class MessageEntity {
     @JoinColumn(name = "image_id")
     private ImageEntity attachment;
 
-    // todo
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "replyTo_message_id")
     private MessageEntity replyTo;

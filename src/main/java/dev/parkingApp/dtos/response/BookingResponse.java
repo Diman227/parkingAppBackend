@@ -28,6 +28,5 @@ public class BookingResponse {
 
     private UserResponse renter;
 
-
 }
 

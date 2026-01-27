@@ -32,7 +32,6 @@ public class BookingEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-    // todo ManyToOne потому что у одного ПМ могут быть брони на разное время
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rented_spot", nullable = false)
     private SpotEntity spot;
