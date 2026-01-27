@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ReviewRepository extends CrudRepository<ReviewEntity, Long> {
 
-    @Query(value = " select r from ReviewEntity r where r.spot.id = :spotId")
+    @Query("select r from ReviewEntity r where r.spot.id = :spotId")
     List<ReviewEntity> getSpotReviews(@Param("spotId") Long spotId);
+
+    @Query("select r from ReviewEntity r")
+    List<ReviewEntity> getAllReviews();
 }

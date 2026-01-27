@@ -1,39 +1,37 @@
-package dev.parkingApp.dtos.auth;
+package dev.parkingApp.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
-public class SignInRequest {
+@NoArgsConstructor
+public class UserRequest {
+
+    @NotNull
+    @Positive
+    private Long id;
 
     @NotNull
     @NotBlank
-    @Size(max = 15)
-    private String phoneNumber;
-
-    @NotNull
-    @NotBlank
-    @Size(max = 128)
-    private String password;
-
-    @NotNull
-    @NotBlank
-    @Size(max = 128)
+    @Size(max = 24)
     private String surname;
 
     @NotNull
     @NotBlank
-    @Size(max = 128)
+    @Size(max = 16)
     private String name;
 
     @NotNull
     @NotBlank
-    @Size(max = 64)
+    @Size(max = 32)
     private String email;
+
 }

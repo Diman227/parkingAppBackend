@@ -19,25 +19,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReviewRequest {
 
+    @NotNull(groups = Update.class)
+    @Positive(groups = Update.class)
     private Long id;
 
-    @Length(max = 256, message = "Максимальный объем отзыва - 256 символов")
+    @Length(max = 256, groups = {Create.class, Update.class}, message = "Максимальный объем отзыва - 256 символов")
     private String message;
 
-    @NotNull
-    @Min(1)
-    @Max(5)
+    @NotNull(groups = {Create.class, Update.class})
+    @Min(value = 1, groups = {Create.class, Update.class})
+    @Max(value = 5, groups = {Create.class, Update.class})
     private BigDecimal rate;
 
     private LocalDateTime createdAt;
 
-    @NotNull
-    @Positive
+    @NotNull(groups = {Create.class, Update.class})
+    @Positive(groups = {Create.class, Update.class})
     private Long spotId;
 
-    @NotNull
-    @Positive
+    @NotNull(groups = {Create.class, Update.class})
+    @Positive(groups = {Create.class, Update.class})
     private Long authorId;
 
     // todo добавить list картинок
+
+    public interface Create {};
+    public interface Update {};
 }

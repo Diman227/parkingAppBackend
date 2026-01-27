@@ -10,16 +10,19 @@ import dev.parkingApp.repositories.CredentialsRepository;
 import dev.parkingApp.repositories.UserRepository;
 import dev.parkingApp.services.auth.AuthUserDetailsService;
 import dev.parkingApp.services.auth.TokenManager;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("*api/auth/")
 @CrossOrigin(origins = "http://localhost:4200")
+@Validated
 public class AuthController {
 
     private final AuthUserDetailsService userDetailsService;
@@ -30,7 +33,7 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @PostMapping(value = "login")
-    public TokenResponse createToken(@RequestBody TokenRequest tokenRequest) throws Exception {
+    public TokenResponse createToken(@RequestBody @Valid TokenRequest tokenRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(tokenRequest.getPhoneNumber(), tokenRequest.getPassword())
@@ -45,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "register")
-    public void createUser(@RequestBody SignInRequest request) {
+    public void createUser(@RequestBody @Valid SignInRequest request) {
 
         userDetailsService.createUser(request);
     }

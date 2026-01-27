@@ -1,5 +1,6 @@
 package dev.parkingApp.services;
 
+import dev.parkingApp.dtos.request.UserRequest;
 import dev.parkingApp.dtos.response.UserResponse;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.UserNotFoundException;
@@ -23,7 +24,7 @@ public class UserService {
 
     }
 
-    public UserResponse editUserInfo(UserResponse userDTO) {
+    public UserResponse editUserInfo(UserRequest userDTO) {
 
         UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow(
                 () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!")

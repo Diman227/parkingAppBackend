@@ -1,6 +1,7 @@
 package dev.parkingApp.dtos.request;
 
 import dev.parkingApp.dtos.response.CoordinatesResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -44,7 +45,7 @@ public class SpotRequest {
 
     private LocalDateTime createdAt;
 
-    @NotNull(groups = {Create.class, Update.class})
+    @Valid
     private CoordinatesResponse location;
 
     @NotNull(groups = {Create.class, Update.class})

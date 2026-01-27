@@ -33,7 +33,7 @@ public class ReviewService {
 
         // todo add images
         if(!bookingRepository.hadUserBookingOfSpot(reviewDTO.getSpotId(), reviewDTO.getAuthorId(), LocalDateTime.now())) {
-            throw new UserHaveNotPermissionException("Пользователь не может оставить отзыв на место с id " + reviewDTO.getSpotId());
+            throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
         }
         ReviewEntity review = reviewMapper.toReviewEntity(reviewDTO);
 
@@ -60,5 +60,9 @@ public class ReviewService {
         review.setMessage(reviewDTO.getMessage());
 
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
+    }
+
+    public List<ReviewResponse> getAllReviews() {
+        return reviewMapper.toListReviewResponses(reviewRepository.getAllReviews());
     }
 }
