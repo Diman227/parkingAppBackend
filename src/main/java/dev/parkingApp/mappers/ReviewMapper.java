@@ -19,7 +19,6 @@ public interface ReviewMapper {
 
     // Request --> Entity
 
-    // todo check mapping
     ReviewEntity toReviewEntity(ReviewRequest reviewRequest);
 
 }

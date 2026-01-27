@@ -19,7 +19,6 @@ public interface ChatMapper {
 
     // Request ---> Entity
 
-    // todo check mapping
     ChatEntity toChatEntity(ChatRequest chatRequest);
 
 }

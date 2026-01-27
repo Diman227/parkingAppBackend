@@ -19,7 +19,6 @@ public interface SpotMapper {
 
     // Request ---> Entity
 
-    // todo check mapping
     SpotEntity toSpotEntity(SpotRequest spotRequest);
 
 }

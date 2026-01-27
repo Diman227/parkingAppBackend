@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = { SpotMapper.class })
+@Mapper(componentModel = "spring", uses = { SpotMapper.class, UserMapper.class })
 public interface BookingMapper {
 
     // Entity ---> Response
@@ -19,7 +19,6 @@ public interface BookingMapper {
 
     // Request ---> Entity
 
-    // todo check mapping
     BookingEntity toBookingEntity(BookingRequest bookingRequest);
 
 }
