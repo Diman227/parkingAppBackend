@@ -21,18 +21,21 @@ public class ReviewEntity {
     @Column(name = "review_id")
     private Long id;
 
+    @Column(nullable = false)
     private String message;
 
+    @Column(nullable = false)
     private BigDecimal rate;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spot_id")
+    @JoinColumn(name = "spot_id", nullable = false)
     private SpotEntity spot;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author", nullable = false)
     private UserEntity author;
 
     @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -19,20 +19,23 @@ public class MessageEntity {
     @Column(name = "message_id")
     private Long id;
 
+    @Column(nullable = false)
     private String message;
 
+    @Column(nullable = false)
     private LocalDateTime sentAt;
 
     private LocalDateTime readAt;
 
+    @Column(nullable = false)
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chat_id", nullable = false)
     private ChatEntity chat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -19,14 +19,17 @@ public class UserEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false)
     private String surname;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "credentials_id")
+    @JoinColumn(name = "credentials_id", nullable = false)
     private CredentialsEntity credentials;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)

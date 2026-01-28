@@ -25,6 +25,7 @@ public class PasswordEntity {
     @Column(name = "password_id")
     private Long id;
 
+    @Column(nullable = false)
     private String password;
 
     @JsonIgnore

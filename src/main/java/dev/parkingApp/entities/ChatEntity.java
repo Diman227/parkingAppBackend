@@ -21,11 +21,11 @@ public class ChatEntity {
 
     // todo что будет - когда пара человек может выступать оба в качестве владельца и арендатора
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "consumer_id")
+    @JoinColumn(name = "consumer_id", nullable = false)
     private UserEntity consumer;
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -21,21 +21,28 @@ public class SpotEntity {
     @Column(name = "spot_id")
     private Long id;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private String address;
 
+    // todo delete later
+    @Column(nullable = false)
     private BigDecimal rate;
 
+    @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(nullable = false)
     private CoordinatesEntity location;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
 
     @OneToMany(mappedBy = "spot",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
