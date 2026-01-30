@@ -38,7 +38,6 @@ public class SpotEntity {
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Column(nullable = false)
     private CoordinatesEntity location;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

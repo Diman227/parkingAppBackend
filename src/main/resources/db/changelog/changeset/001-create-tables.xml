@@ -1,0 +1,93 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="creating-tables" author="kent04">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bookings"/>
+            </not>
+        </preConditions>
+        
+        <createTable tableName="bookings">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="rented_spot_id" type="bigint"></column>
+            <column name="renter_id" type="bigint"></column>
+            <column name="total_price" type="numeric(38,2)"></column>
+            <column name="start_at" type="timestamp(6) without time zone"></column>
+            <column name="end_at" type="timestamp(6) without time zone"></column>
+            <column name="created_at" type="timestamp(6) without time zone"></column>
+        </createTable>
+        
+        <createTable tableName="chats">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="consumer_id" type="bigint"></column>
+            <column name="owner_id" type="bigint"></column>
+        </createTable>
+
+        <createTable tableName="coordinates">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="lat" type="varchar(64)"></column>
+            <column name="lon" type="varchar(64)"></column>
+        </createTable>
+
+        <createTable tableName="credentials">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="password_id" type="bigint"></column>
+            <column name="phone_number" type="bigint"></column>
+        </createTable>
+        
+        <createTable tableName="images">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="external_id" type="varchar(256)"></column>
+            <column name="spot_id" type="bigint"></column>
+            <column name="review_id" type="bigint"></column>
+        </createTable>
+        
+        <createTable tableName="messages">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="message" type="varchar(256)"></column>
+            <column name="sent_at" type="timestamp(6) without time zone"></column>
+            <column name="read_at" type="timestamp(6) without time zone"></column>
+            <column name="chat_id" type="bigint"></column>
+            <column name="author_id" type="bigint"></column>
+            <column name="image_id" type="bigint"></column>
+            <column name="reply_to_message_id" type="bigint"></column>
+        </createTable>
+
+        <createTable tableName="passwords">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="password" type="varchar(256)"></column>
+        </createTable>
+
+        <createTable tableName="reviews">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="message" type="varchar(256)"></column>
+            <column name="rate" type="numeric(11,10)"></column>
+            <column name="created_at" type="timestamp(6) without time zone"></column>
+            <column name="author_id" type="bigint"></column>
+            <column name="spot_id" type="bigint"></column>
+        </createTable>
+
+        <createTable tableName="spots">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="description" type="varchar(256)"></column>
+            <column name="address" type="varchar(256)"></column>
+            <column name="price" type="numeric(16,2)"></column>
+            <column name="owner_id" type="bigint"></column>
+            <column name="coordinates_id" type="bigint"></column>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true"></column>
+            <column name="name" type="varchar(256)"></column>
+            <column name="surname" type="varchar(256)"></column>
+            <column name="email" type="varchar(128)"></column>
+            <column name="credentials_id" type="bigint"></column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
