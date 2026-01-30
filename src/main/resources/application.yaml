@@ -21,6 +21,10 @@ spring:
 
     debug: true
 
+  liquibase:
+#    drop-first: true
+    enabled: true
+
 logging:
   level:
     org:

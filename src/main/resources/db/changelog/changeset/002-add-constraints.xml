@@ -1,0 +1,86 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="adding-primary-keys" author="kent04">
+        <addPrimaryKey tableName="bookings" columnNames="id"/>
+        <addPrimaryKey tableName="chats" columnNames="id"/>
+        <addPrimaryKey tableName="coordinates" columnNames="id"/>
+        <addPrimaryKey tableName="credentials" columnNames="id"/>
+        <addPrimaryKey tableName="images" columnNames="id"/>
+        <addPrimaryKey tableName="messages" columnNames="id"/>
+        <addPrimaryKey tableName="passwords" columnNames="id"/>
+        <addPrimaryKey tableName="reviews" columnNames="id"/>
+        <addPrimaryKey tableName="spots" columnNames="id"/>
+        <addPrimaryKey tableName="users" columnNames="id"/>
+    </changeSet>
+
+    <changeSet id="adding-foreign-keys" author="kent04">
+        
+        <!-- table bookings -->
+        <addForeignKeyConstraint baseTableName="bookings" baseColumnNames="rented_spot_id"
+                                 constraintName="rented_spot_fk" referencedTableName="spots"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="bookings" baseColumnNames="renter_id"
+                                 constraintName="renter_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <!-- table chats -->
+        <addForeignKeyConstraint baseTableName="chats" baseColumnNames="consumer_id"
+                                 constraintName="chat_consumer_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="chats" baseColumnNames="owner_id"
+                                 constraintName="chat_owner_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        
+        <!-- table credentials -->
+        <addForeignKeyConstraint baseTableName="credentials" baseColumnNames="password_id"
+                                 constraintName="password_fk" referencedTableName="passwords"
+                                 referencedColumnNames="id"/>
+
+        <!-- table images -->
+        <addForeignKeyConstraint baseTableName="images" baseColumnNames="spot_id"
+                                 constraintName="image_spot_fk" referencedTableName="spots"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="images" baseColumnNames="review_id"
+                                 constraintName="image_review_fk" referencedTableName="reviews"
+                                 referencedColumnNames="id"/>
+
+        <!-- table messages -->
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chat_id"
+                                 constraintName="message_chat_fk" referencedTableName="chats"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="author_id"
+                                 constraintName="message_author_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="image_id"
+                                 constraintName="message_image_fk" referencedTableName="images"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="reply_to_message_id"
+                                 constraintName="message_reply_to_message_fk" referencedTableName="messages"
+                                 referencedColumnNames="id"/>
+
+        <!-- table reviews -->
+        <addForeignKeyConstraint baseTableName="reviews" baseColumnNames="author_id"
+                                 constraintName="review_author_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="reviews" baseColumnNames="spot_id"
+                                 constraintName="reviewed_spot_fk" referencedTableName="spots"
+                                 referencedColumnNames="id"/>
+
+        <!-- table spots -->
+        <addForeignKeyConstraint baseTableName="spots" baseColumnNames="owner_id"
+                                 constraintName="spot_owner_fk" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="spots" baseColumnNames="coordinates_id"
+                                 constraintName="spot_coordinates_fk" referencedTableName="coordinates"
+                                 referencedColumnNames="id"/>
+
+        <!-- table users -->
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="credentials_id"
+                                 constraintName="user_credentials_fk" referencedTableName="credentials"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog> 
