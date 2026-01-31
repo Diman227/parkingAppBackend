@@ -14,7 +14,6 @@ public class CoordinatesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coordinates_id")
     private Long id;
 
     private String lat;

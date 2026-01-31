@@ -12,6 +12,6 @@ public interface SpotRepository extends JpaRepository<SpotEntity, Long> {
     @Query("SELECT s FROM SpotEntity s WHERE s.owner.id = :userId")
     List<SpotEntity> getUserOwnedSpots(@Param("userId") Long userId);
 
-    @Query("SELECT s FROM SpotEntity s JOIN FETCH s.location")
+    @Query("SELECT s FROM SpotEntity s JOIN FETCH s.coordinates")
     List<SpotEntity> getAllSpots();
 }

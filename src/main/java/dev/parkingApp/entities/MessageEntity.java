@@ -16,7 +16,6 @@ public class MessageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id")
     private Long id;
 
     @Column(nullable = false)
@@ -43,7 +42,7 @@ public class MessageEntity {
     private ImageEntity attachment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "replyTo_message_id")
+    @JoinColumn(name = "reply_to_message_id")
     private MessageEntity replyTo;
 
 }

@@ -18,7 +18,6 @@ public class SpotEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "spot_id")
     private Long id;
 
     @Column(nullable = false)
@@ -37,8 +36,9 @@ public class SpotEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CoordinatesEntity location;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "coordinates_id")
+    private CoordinatesEntity coordinates;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "owner_id", nullable = false)

@@ -17,7 +17,6 @@ public class BookingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +32,7 @@ public class BookingEntity {
     private BigDecimal totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rented_spot", nullable = false)
+    @JoinColumn(name = "rented_spot_id", nullable = false)
     private SpotEntity spot;
 
     @ManyToOne(fetch = FetchType.LAZY)

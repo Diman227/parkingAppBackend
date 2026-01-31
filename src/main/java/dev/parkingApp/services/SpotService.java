@@ -5,6 +5,7 @@ import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.SpotNotFoundException;
+import dev.parkingApp.mappers.CoordinatesMapper;
 import dev.parkingApp.mappers.SpotMapper;
 import dev.parkingApp.repositories.SpotRepository;
 import dev.parkingApp.repositories.UserRepository;
@@ -19,8 +20,10 @@ import java.util.List;
 public class SpotService {
 
     private final SpotRepository spotRepository;
-    private final SpotMapper spotMapper;
     private final UserRepository userRepository;
+
+    private final SpotMapper spotMapper;
+    private final CoordinatesMapper coordinatesMapper;
 
     public SpotResponse addSpot(SpotRequest spotDTO) {
 
@@ -30,6 +33,7 @@ public class SpotService {
                 () -> new SpotNotFoundException("Пользователь не найден с id - " + spotDTO.getOwnerId()));
 
         spot.setOwner(user);
+        spot.setCoordinates(coordinatesMapper.toCoordinatesEntity(spotDTO.getLocation()));
         spot.setCreatedAt(LocalDateTime.now());
 
         return spotMapper.toSpotResponse(spotRepository.save(spot));

@@ -17,7 +17,7 @@ public class ParkingAppApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(ParkingAppApplication.class, args);
-//		initializer.initial();
+		initializer.initial();
 
 	}
 

@@ -14,7 +14,6 @@ public class CredentialsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "credentials_id")
     private Long id;
 
     @Column(unique = true, nullable = false)

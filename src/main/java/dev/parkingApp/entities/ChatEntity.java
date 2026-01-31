@@ -16,7 +16,6 @@ public class ChatEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
     private Long id;
 
     // todo что будет - когда пара человек может выступать оба в качестве владельца и арендатора
