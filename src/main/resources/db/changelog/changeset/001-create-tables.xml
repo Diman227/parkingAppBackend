@@ -32,7 +32,7 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="chats">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="consumer_id" type="bigint">
@@ -62,14 +62,14 @@
                 <constraints nullable="true" unique="true" uniqueConstraintName="credentials_phoneNumber_unique_constraint"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="images">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="external_id" type="varchar(256)"/>
             <column name="spot_id" type="bigint"/>
             <column name="review_id" type="bigint"/>
         </createTable>
-        
+
         <createTable tableName="messages">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="message" type="varchar(256)">
@@ -112,49 +112,49 @@
                 <constraints nullable="true"/>
             </column>
             <column name="author_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="review_author_unique_constraint"/>
+                <constraints nullable="true"/>
             </column>
             <column name="spot_id" type="bigint" >
-                <constraints nullable="true" unique="true" uniqueConstraintName="review_spot_unique_constraint"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="spots">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="description" type="varchar(256)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="address" type="varchar(256)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="price" type="numeric(16,2)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="rate" type="numeric(7,5)"/>
             <column name="created_at" type="timestamp(6) without time zone">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="owner_id" type="bigint">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="coordinates_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="spot_coordinates_unique_constraint"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="spot_coordinates_unique_constraint"/>
             </column>
         </createTable>
 
         <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="name" type="varchar(256)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="surname" type="varchar(256)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="email" type="varchar(128)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="email_unique_constraint"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="email_unique_constraint"/>
             </column>
             <column name="credentials_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="credentials_unique_constraint"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="credentials_unique_constraint"/>
             </column>
         </createTable>
 

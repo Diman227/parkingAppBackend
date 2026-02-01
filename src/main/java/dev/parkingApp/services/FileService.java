@@ -1,10 +1,14 @@
 package dev.parkingApp.services;
 
+import dev.parkingApp.exceptions.FailedFileDeleteException;
+import dev.parkingApp.exceptions.FailedFileUploadException;
 import io.minio.*;
 
+import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -28,9 +32,9 @@ public class FileService {
     @Value("${minio.bucket-name}")
     private String bucketName;
 
-    public ResponseEntity<String> uploadFile(MultipartFile file) {
+    public ResponseEntity<String> addFile(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
         try {
-            String fileName = file.getOriginalFilename();
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -41,46 +45,53 @@ public class FileService {
             );
             return ResponseEntity.ok("File uploaded successfully: " + fileName);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            throw new FailedFileUploadException("File wasn't uploaded with name - " + fileName);
         }
     }
 
-    public ResponseEntity<Resource> downloadFile(String filename) {
-        try {
-            InputStream stream = minioClient.getObject(
-                    GetObjectArgs.builder().bucket(bucketName).object(filename).build()
-            );
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(new InputStreamResource(stream));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+//    public ResponseEntity<Resource> getFile(String filename) {
+//        try {
+//            InputStream stream = minioClient.getObject(
+//                    GetObjectArgs.builder()
+//                            .bucket(bucketName)
+//                            .object(filename)
+//                            .build()
+//            );
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                    .body(new InputStreamResource(stream));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
 
-    public ResponseEntity<String> deleteFile(String filename) {
+    // todo https://github.com/minio/minio-java/blob/master/examples/GetPresignedObjectUrl.java
+
+//    public String getImageUrl(String fileName) {
+//        try {
+//            return minioClient.getPresignedObjectUrl(
+//                    GetPresignedObjectUrlArgs.builder()
+//                            .method(Method.GET)
+//                            .bucket(bucketName)
+//                            .object(fileName)
+//                            .expiry(60 * 60 * 24)
+//                            .build()
+//            );
+//        }
+//    }
+
+    public String deleteFile(String filename) {
         try {
             minioClient.removeObject(
-                    RemoveObjectArgs.builder().bucket(bucketName).object(filename).build()
+                    RemoveObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(filename)
+                            .build()
             );
-            return ResponseEntity.ok("File deleted successfully: " + filename);
+            return filename + " was deleted";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            throw new FailedFileDeleteException("Error in deleting file with name - " + filename);
         }
     }
 
-    public ResponseEntity<List<String>> listFiles() {
-        try {
-            List<String> fileNames = new ArrayList<>();
-            Iterable<Result<Item>> items = minioClient.listObjects(
-                    ListObjectsArgs.builder().bucket(bucketName).build()
-            );
-            for (Result<Item> item : items) {
-                fileNames.add(item.get().objectName());
-            }
-            return ResponseEntity.ok(fileNames);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
 }

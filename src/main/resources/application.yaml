@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/parking_service_liq
+    url: jdbc:postgresql://localhost:5434/parking_service
     username: postgres
     password: zaq1@WSX
 
