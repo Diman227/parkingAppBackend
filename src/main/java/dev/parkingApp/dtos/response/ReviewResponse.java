@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +39,5 @@ public class ReviewResponse {
     @NotNull
     private UserResponse author;
 
-    // todo добавить list картинок
+    private List<ImageResponse> images;
 }

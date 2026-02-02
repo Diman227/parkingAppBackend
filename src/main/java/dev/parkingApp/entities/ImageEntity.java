@@ -18,8 +18,6 @@ public class ImageEntity {
 
     private String externalId;
 
-    // todo реализация?
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spot_id")
     private SpotEntity spot;

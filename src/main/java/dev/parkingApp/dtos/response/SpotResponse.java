@@ -34,6 +34,6 @@ public class SpotResponse {
 
     private List<ReviewResponse> reviews;
 
-    // todo list с картинками
+    private List<ImageResponse> images;
 
 }

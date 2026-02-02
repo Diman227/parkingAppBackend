@@ -21,7 +21,6 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // todo ???
     @GetMapping("/{spotId}")
     public List<ReviewResponse> getSpotReviews(@PathVariable("spotId") @NotNull @Positive Long spotId) {
         return reviewService.getSpotReviews(spotId);

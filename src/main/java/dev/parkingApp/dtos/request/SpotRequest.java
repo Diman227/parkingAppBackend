@@ -52,11 +52,11 @@ public class SpotRequest {
     @Positive(groups = {Create.class, Update.class})
     private Long ownerId;
 
+    private List<ImageRequest> images;
+
     private List<ReviewRequest> reviews;
 
     public interface Create {}
     public interface Update {}
-
-    // todo list с картинками
 
 }

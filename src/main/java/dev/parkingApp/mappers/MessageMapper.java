@@ -13,7 +13,6 @@ public interface MessageMapper {
 
     // Entity ---> Response
 
-    // todo check mapping
     @Mapping(target = "chatId", source = "chat.id")
     @Mapping(target = "authorId", source = "author.id")
     @Mapping(target = "replyToMessageId", source = "replyTo.id")

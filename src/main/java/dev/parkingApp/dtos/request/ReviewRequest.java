@@ -1,5 +1,6 @@
 package dev.parkingApp.dtos.request;
 
+import dev.parkingApp.dtos.response.ImageResponse;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,7 +43,7 @@ public class ReviewRequest {
     @Positive(groups = {Create.class, Update.class})
     private Long authorId;
 
-    // todo добавить list картинок
+    private List<ImageRequest> images;
 
     public interface Create {};
     public interface Update {};
