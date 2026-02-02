@@ -3,6 +3,7 @@ package dev.parkingApp.dtos.response;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,8 @@ public class ReviewResponse {
     private LocalDateTime createdAt;
 
     @NotNull
-    private UserResponse spot;
+    @Positive
+    private Long reviewedSpotId;
 
     @NotNull
     private UserResponse author;

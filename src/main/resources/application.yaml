@@ -22,7 +22,7 @@ spring:
     debug: true
 
   liquibase:
-#    drop-first: true
+    drop-first: true
     enabled: true
 
 logging:

@@ -31,8 +31,7 @@ public class BookingService {
 
     @Transactional
     public BookingResponse createBooking(BookingRequest bookingDTO){
-        //todo с аннотацией он выполняет запросы и получает эти данные в прокси, без аннотации нет запросов, но выбрасываются исключения, но в итоге все отрабатывает правильно
-        // по сути, как я понял, из-за отладки происходит запрос в бд, тк интерфейс отладки хочет отобразить объект и это считается обращением к его полям
+
         SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
 
         UserEntity renter = userRepository.getReferenceById(bookingDTO.getRenterId());

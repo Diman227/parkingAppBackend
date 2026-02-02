@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReviewMapper {
 
     // Entity --> Response
-
+    @Mapping(target = "reviewedSpotId", source = "spot.id")
     ReviewResponse toReviewResponse(ReviewEntity review);
 
     List<ReviewResponse> toListReviewResponses(List<ReviewEntity> reviews);

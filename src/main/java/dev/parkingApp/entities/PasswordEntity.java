@@ -14,10 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Table(name = "passwords")
 public class PasswordEntity {
 
-    static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//    static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public PasswordEntity(String password) {
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
     @Id
@@ -27,8 +27,8 @@ public class PasswordEntity {
     @Column(nullable = false)
     private String password;
 
-    @JsonIgnore
-    private void setPasswordWithEncoding(String password) {
-        this.password = passwordEncoder.encode(password);
-    }
+//    @JsonIgnore
+//    private void setPasswordWithEncoding(String password) {
+//        this.password = passwordEncoder.encode(password);
+//    }
 }

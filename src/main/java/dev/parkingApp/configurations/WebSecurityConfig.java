@@ -1,6 +1,5 @@
 package dev.parkingApp.configurations;
 
-import dev.parkingApp.services.auth.AuthUserDetailsService;
 import dev.parkingApp.services.auth.JwtAuthenticationEntryPoint;
 import dev.parkingApp.services.auth.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,13 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final AuthUserDetailsService authUserDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Bean
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    // todo тестовые данные, добавленные в миграции, не имеют шифрования, поэтому ошибка была и добавил {noop} в пароли пока
+//    @Bean
+//    protected PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

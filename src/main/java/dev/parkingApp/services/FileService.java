@@ -4,6 +4,7 @@ import dev.parkingApp.exceptions.FailedFileDeleteException;
 import dev.parkingApp.exceptions.FailedFileUploadException;
 import io.minio.*;
 
+import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,18 +71,22 @@ public class FileService {
 
     // todo https://github.com/minio/minio-java/blob/master/examples/GetPresignedObjectUrl.java
 
-//    public String getImageUrl(String fileName) {
-//        try {
-//            return minioClient.getPresignedObjectUrl(
-//                    GetPresignedObjectUrlArgs.builder()
-//                            .method(Method.GET)
-//                            .bucket(bucketName)
-//                            .object(fileName)
-//                            .expiry(60 * 60 * 24)
-//                            .build()
-//            );
-//        }
-//    }
+    public String getImageUrl(String fileName) {
+        try {
+            return minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(bucketName)
+                            .object(fileName)
+                            .expiry(60 * 60 * 24)
+                            .build()
+            );
+        } catch (ServerException | InternalException | XmlParserException | InvalidResponseException |
+                 InvalidKeyException | NoSuchAlgorithmException | IOException | ErrorResponseException |
+                 InsufficientDataException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public String deleteFile(String filename) {
         try {

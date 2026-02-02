@@ -3,7 +3,6 @@ package dev.parkingApp.controllers;
 import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.dtos.response.ReviewResponse;
 import dev.parkingApp.services.ReviewService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "*/api/base/reviews", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "*api/base/reviews", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Validated
 public class ReviewController {

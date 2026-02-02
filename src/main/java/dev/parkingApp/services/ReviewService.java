@@ -6,6 +6,7 @@ import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.ReviewNotFoundException;
+import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.exceptions.UserHaveNotPermissionException;
 import dev.parkingApp.mappers.ReviewMapper;
 import dev.parkingApp.repositories.BookingRepository;
@@ -46,8 +47,8 @@ public class ReviewService {
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
     }
 
-    // todo я напрямую получаю список, но не обработываю исключение на существование места
     public List<ReviewResponse> getSpotReviews(Long spotId) {
+        if(!spotRepository.existsById(spotId)) throw new SpotNotFoundException("Spot wasn't found with id - " + spotId);
         return reviewMapper.toListReviewResponses(reviewRepository.getSpotReviews(spotId));
     }
 

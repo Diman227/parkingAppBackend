@@ -16,7 +16,7 @@ public class TokenRequest {
 
     @NotNull
     @NotBlank
-    @Size(max = 15)
+    @Size(max = 20)
     private String phoneNumber;
 
     @NotNull

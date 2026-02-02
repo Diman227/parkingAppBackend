@@ -28,9 +28,6 @@ public class AuthController {
     private final AuthUserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
     private final TokenManager tokenManager;
-    private final CredentialsRepository credentialsRepository;
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     @PostMapping(value = "login")
     public TokenResponse createToken(@RequestBody @Valid TokenRequest tokenRequest) throws Exception {

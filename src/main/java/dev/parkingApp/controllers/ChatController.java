@@ -1,6 +1,5 @@
 package dev.parkingApp.controllers;
 
-import dev.parkingApp.dtos.request.ChatRequest;
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.dtos.response.ChatResponse;
 import dev.parkingApp.services.ChatService;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "*/api/base/chats", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "*api/base/chats", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ChatController {
 
