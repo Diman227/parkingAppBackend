@@ -9,7 +9,11 @@ import java.util.List;
 
 public interface SpotRepository extends JpaRepository<SpotEntity, Long> {
 
-    @Query("SELECT s FROM SpotEntity s WHERE s.owner.id = :userId")
+    @Query("SELECT s FROM SpotEntity s " +
+            "LEFT JOIN FETCH s.owner " +
+            "LEFT JOIN FETCH s.coordinates " +
+            "LEFT JOIN FETCH s.images " +
+            "WHERE s.owner.id = :userId")
     List<SpotEntity> getUserOwnedSpots(@Param("userId") Long userId);
 
     @Query("SELECT s FROM SpotEntity s JOIN FETCH s.coordinates")

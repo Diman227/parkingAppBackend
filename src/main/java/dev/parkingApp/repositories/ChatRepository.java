@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ChatRepository extends CrudRepository<ChatEntity, Long> {
 
-    @Query("select c from ChatEntity c where " +
+    @Query("SELECT c FROM ChatEntity c WHERE " +
             "c.owner.id = :userId OR c.consumer.id = :userId")
     List<ChatEntity> getUserChats(@Param("userId") Long userId);
 }

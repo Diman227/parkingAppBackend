@@ -2,12 +2,14 @@ package dev.parkingApp.services;
 
 import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.dtos.response.ReviewResponse;
+import dev.parkingApp.entities.ImageEntity;
 import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.ReviewNotFoundException;
 import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.exceptions.UserHaveNotPermissionException;
+import dev.parkingApp.mappers.ImageMapper;
 import dev.parkingApp.mappers.ReviewMapper;
 import dev.parkingApp.repositories.BookingRepository;
 import dev.parkingApp.repositories.ReviewRepository;
@@ -28,7 +30,10 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
 
+    private final ImageAttachmentService imageAttachmentService;
+
     private final ReviewMapper reviewMapper;
+    private final ImageMapper imageMapper;
 
     public ReviewResponse addReview(ReviewRequest reviewDTO) {
 
@@ -36,6 +41,7 @@ public class ReviewService {
         if(!bookingRepository.hadUserBookingOfSpot(reviewDTO.getSpotId(), reviewDTO.getAuthorId(), LocalDateTime.now())) {
             throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
         }
+
         ReviewEntity review = reviewMapper.toReviewEntity(reviewDTO);
 
         SpotEntity spot = spotRepository.getReferenceById(reviewDTO.getSpotId());
@@ -43,13 +49,17 @@ public class ReviewService {
 
         review.setSpot(spot);
         review.setAuthor(author);
+        // review.setImages ??? -> при ошибке сохранении review файлы уже загрузятся в minio
+        // можно добавлять картинки уже после сохранения отзыва
 
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
     }
 
     public List<ReviewResponse> getSpotReviews(Long spotId) {
+
         if(!spotRepository.existsById(spotId)) throw new SpotNotFoundException("Spot wasn't found with id - " + spotId);
-        return reviewMapper.toListReviewResponses(reviewRepository.getSpotReviews(spotId));
+        List<ReviewEntity> reviews = reviewRepository.getSpotReviews(spotId);
+        return reviewMapper.toListReviewResponses(reviews);
     }
 
     public ReviewResponse updateReview(ReviewRequest reviewDTO) {

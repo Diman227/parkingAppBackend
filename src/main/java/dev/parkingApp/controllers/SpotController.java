@@ -7,7 +7,9 @@ import dev.parkingApp.services.SpotService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -41,12 +43,17 @@ public class SpotController {
     }
 
     @GetMapping("/user")
-    public List<SpotResponse> getUserOwnedSpots(@AuthenticationPrincipal AuthUser principal) {
-        return spotService.getUserOwnedSpots(principal.getUserId());
+    public List<SpotResponse> getUserOwnedSpotsWithImages(@AuthenticationPrincipal AuthUser principal) {
+        return spotService.getUserOwnedSpotsWithImages(principal.getUserId());
     }
 
     @GetMapping
     public List<SpotResponse> getAllSpots() {
         return spotService.getAllSpots();
+    }
+
+    @GetMapping("hello")
+    ResponseEntity<String> hello() {
+        return new ResponseEntity<>("Hello World!!!", HttpStatus.OK);
     }
 }

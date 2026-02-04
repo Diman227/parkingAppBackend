@@ -14,4 +14,8 @@ public class ImageResponse {
     private Long id;
 
     private String url;
+
+    private Long spotId;
+
+    private Long reviewId;
 }

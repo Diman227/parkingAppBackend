@@ -4,7 +4,6 @@ import dev.parkingApp.dtos.request.SpotRequest;
 import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

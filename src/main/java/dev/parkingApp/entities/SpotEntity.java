@@ -2,6 +2,7 @@ package dev.parkingApp.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -49,4 +50,5 @@ public class SpotEntity {
 
     @OneToMany(mappedBy = "spot", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
+
 }

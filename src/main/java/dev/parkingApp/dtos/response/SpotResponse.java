@@ -1,6 +1,5 @@
 package dev.parkingApp.dtos.response;
 
-import dev.parkingApp.dtos.request.ReviewRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +27,9 @@ public class SpotResponse {
 
     private LocalDateTime createdAt;
 
-    private CoordinatesResponse location;
+    private CoordinatesResponse coordinates;
 
     private UserResponse owner;
-
-    private List<ReviewResponse> reviews;
 
     private List<ImageResponse> images;
 

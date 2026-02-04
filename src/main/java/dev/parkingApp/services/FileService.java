@@ -1,7 +1,9 @@
 package dev.parkingApp.services;
 
+import dev.parkingApp.dtos.response.ImageResponse;
 import dev.parkingApp.exceptions.FailedFileDeleteException;
 import dev.parkingApp.exceptions.FailedFileUploadException;
+import dev.parkingApp.repositories.ImageRepository;
 import io.minio.*;
 
 import io.minio.errors.*;
@@ -26,6 +28,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +39,12 @@ public class FileService {
     @Value("${minio.bucket-name}")
     private String bucketName;
 
-    public ResponseEntity<String> addFile(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+    public String addFile(MultipartFile file) {
+
+        if(file.isEmpty()) throw new FailedFileUploadException("Uploaded file is empty");
+
+        String fileName = generateUniqueFileName(file.getOriginalFilename());
+
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -47,27 +54,23 @@ public class FileService {
                             .contentType(file.getContentType())
                             .build()
             );
-            return ResponseEntity.ok("File uploaded successfully: " + fileName);
+            return fileName;
+
         } catch (Exception e) {
             throw new FailedFileUploadException("File wasn't uploaded with name - " + fileName);
         }
     }
 
-//    public ResponseEntity<Resource> getFile(String filename) {
-//        try {
-//            InputStream stream = minioClient.getObject(
-//                    GetObjectArgs.builder()
-//                            .bucket(bucketName)
-//                            .object(filename)
-//                            .build()
-//            );
-//            return ResponseEntity.ok()
-//                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//                    .body(new InputStreamResource(stream));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
+    public List<String> addFiles(MultipartFile[] files) {
+        List<String> responses = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) continue;
+            responses.add(addFile(file));
+
+        }
+        return responses;
+    }
 
     // todo https://github.com/minio/minio-java/blob/master/examples/GetPresignedObjectUrl.java
 
@@ -100,6 +103,10 @@ public class FileService {
         } catch (Exception e) {
             throw new FailedFileDeleteException("Error in deleting file with name - " + filename);
         }
+    }
+
+    public String generateUniqueFileName(String fileName) {
+        return UUID.randomUUID().toString().substring(0,16) + fileName.substring(fileName.lastIndexOf("."));
     }
 
 }

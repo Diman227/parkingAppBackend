@@ -54,7 +54,7 @@ public class SpotService {
         return spotId;
     }
 
-    public List<SpotResponse> getUserOwnedSpots(Long userId) {
+    public List<SpotResponse> getUserOwnedSpotsWithImages(Long userId) {
         return spotMapper.toListSpotResponses(spotRepository.getUserOwnedSpots(userId));
     }
 

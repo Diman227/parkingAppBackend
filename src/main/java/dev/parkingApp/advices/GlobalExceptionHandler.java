@@ -12,7 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @Slf4j
 @ControllerAdvice
-public class AllControllerAdvice {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(SpotNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleSpotNotFoundException(SpotNotFoundException ex) {

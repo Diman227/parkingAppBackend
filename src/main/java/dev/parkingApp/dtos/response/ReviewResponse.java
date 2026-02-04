@@ -1,5 +1,6 @@
 package dev.parkingApp.dtos.response;
 
+import dev.parkingApp.entities.UserEntity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -37,7 +38,8 @@ public class ReviewResponse {
     private Long reviewedSpotId;
 
     @NotNull
-    private UserResponse author;
+    private String authorFullName;
 
     private List<ImageResponse> images;
+
 }
