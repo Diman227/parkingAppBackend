@@ -1,29 +1,17 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.response.ImageResponse;
 import dev.parkingApp.exceptions.FailedFileDeleteException;
 import dev.parkingApp.exceptions.FailedFileUploadException;
-import dev.parkingApp.repositories.ImageRepository;
 import io.minio.*;
 
 import io.minio.errors.*;
 import io.minio.http.Method;
-import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -84,6 +72,8 @@ public class FileService {
                             .expiry(60 * 60 * 24)
                             .build()
             );
+
+            // not working without, IDEA's solution/hint
         } catch (ServerException | InternalException | XmlParserException | InvalidResponseException |
                  InvalidKeyException | NoSuchAlgorithmException | IOException | ErrorResponseException |
                  InsufficientDataException e) {
