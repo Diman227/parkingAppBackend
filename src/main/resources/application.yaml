@@ -25,6 +25,9 @@ spring:
     drop-first: true
     enabled: true
 
+  kafka:
+    bootstrap-servers: kafka:9092
+
 logging:
   level:
     org:
