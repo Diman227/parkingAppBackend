@@ -11,12 +11,10 @@ import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.exceptions.UserHaveNotPermissionException;
 import dev.parkingApp.mappers.ImageMapper;
 import dev.parkingApp.mappers.ReviewMapper;
-import dev.parkingApp.repositories.BookingRepository;
-import dev.parkingApp.repositories.ReviewRepository;
-import dev.parkingApp.repositories.SpotRepository;
-import dev.parkingApp.repositories.UserRepository;
+import dev.parkingApp.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,12 +27,14 @@ public class ReviewService {
     private final SpotRepository spotRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
+    private final ImageRepository imageRepository;
 
     private final ImageAttachmentService imageAttachmentService;
 
     private final ReviewMapper reviewMapper;
     private final ImageMapper imageMapper;
 
+    @Transactional
     public ReviewResponse addReview(ReviewRequest reviewDTO) {
 
         // todo add images
@@ -49,10 +49,14 @@ public class ReviewService {
 
         review.setSpot(spot);
         review.setAuthor(author);
-        // review.setImages ??? -> при ошибке сохранении review файлы уже загрузятся в minio
-        // можно добавлять картинки уже после сохранения отзыва
 
-        return reviewMapper.toReviewResponse(reviewRepository.save(review));
+        ReviewResponse response = reviewMapper.toReviewResponse(reviewRepository.save(review));
+
+        if(!reviewDTO.getImages().isEmpty()) {
+            imageRepository.saveAll(imageMapper.toListImageEntities(imageAttachmentService.attachImagesToReview(review.getId(), reviewDTO.getImages())));
+        }
+
+        return response;
     }
 
     public List<ReviewResponse> getSpotReviews(Long spotId) {

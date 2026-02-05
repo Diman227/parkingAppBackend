@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
 
-    // todo пересмотреть responseDTO и что возвращают контроллеры, как будто слишком огромные объекты
     // Entity --> Response
 
     @Mapping(target = "reviewedSpotId", source = "spot.id")

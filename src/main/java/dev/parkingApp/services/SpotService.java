@@ -6,11 +6,14 @@ import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.mappers.CoordinatesMapper;
+import dev.parkingApp.mappers.ImageMapper;
 import dev.parkingApp.mappers.SpotMapper;
+import dev.parkingApp.repositories.ImageRepository;
 import dev.parkingApp.repositories.SpotRepository;
 import dev.parkingApp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +24,15 @@ public class SpotService {
 
     private final SpotRepository spotRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
+    private final ImageAttachmentService imageAttachmentService;
+
+    private final ImageMapper imageMapper;
     private final SpotMapper spotMapper;
     private final CoordinatesMapper coordinatesMapper;
 
+    @Transactional
     public SpotResponse addSpot(SpotRequest spotDTO) {
 
         SpotEntity spot = spotMapper.toSpotEntity(spotDTO);
@@ -36,7 +44,13 @@ public class SpotService {
         spot.setCoordinates(coordinatesMapper.toCoordinatesEntity(spotDTO.getLocation()));
         spot.setCreatedAt(LocalDateTime.now());
 
-        return spotMapper.toSpotResponse(spotRepository.save(spot));
+        SpotResponse response = spotMapper.toSpotResponse(spotRepository.save(spot));
+
+        if(!spotDTO.getImages().isEmpty()) {
+            imageRepository.saveAll(imageMapper.toListImageEntities(imageAttachmentService.attachImagesToSpot(response.getId(), spotDTO.getImages())));
+        }
+
+        return response;
     }
 
     public SpotResponse updateSpot(SpotRequest spotDTO) {

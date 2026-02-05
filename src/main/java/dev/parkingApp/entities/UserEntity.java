@@ -31,13 +31,14 @@ public class UserEntity {
     @JoinColumn(name = "credentials_id", nullable = false)
     private CredentialsEntity credentials;
 
+    // todo посмотреть, зачем сразу инициализировать пустым массивом
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<SpotEntity> ownedSpots;
 
-    @ManyToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<BookingEntity> bookings;
 
     // todo связь неправильная, надо будет подумать и переделать
-    @ManyToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<ChatEntity> chats;
 }

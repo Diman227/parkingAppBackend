@@ -11,6 +11,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ImageMapper {
 
+    ImageEntity toImageEntity(ImageResponse imageResponse);
+
+    List<ImageEntity> toListImageEntities(List<ImageResponse> imageResponse);
+
     // Request --> Entity
 
     @Mapping(target = "spotId", source = "spot.id")
