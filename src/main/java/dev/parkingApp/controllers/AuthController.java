@@ -5,13 +5,12 @@ import dev.parkingApp.dtos.auth.SignInRequest;
 import dev.parkingApp.dtos.auth.TokenRequest;
 import dev.parkingApp.dtos.auth.TokenResponse;
 import dev.parkingApp.exceptions.InvalidCredentialsException;
-import dev.parkingApp.mappers.UserMapper;
-import dev.parkingApp.repositories.CredentialsRepository;
-import dev.parkingApp.repositories.UserRepository;
 import dev.parkingApp.services.auth.AuthUserDetailsService;
 import dev.parkingApp.services.auth.TokenManager;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +29,8 @@ public class AuthController {
     private final TokenManager tokenManager;
 
     @PostMapping(value = "login")
-    public TokenResponse createToken(@RequestBody @Valid TokenRequest tokenRequest) throws Exception {
+    public ResponseEntity<TokenResponse> createToken(
+            @RequestBody @Valid TokenRequest tokenRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(tokenRequest.getPhoneNumber(), tokenRequest.getPassword())
@@ -41,12 +41,14 @@ public class AuthController {
         }
 
         final AuthUser userDetails = userDetailsService.loadUserByUsername(tokenRequest.getPhoneNumber());
-        return new TokenResponse(tokenManager.generateJwtToken(userDetails));
+        TokenResponse tokenResponse = new TokenResponse(tokenManager.generateJwtToken(userDetails));
+        return new ResponseEntity<>(tokenResponse, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value = "register")
-    public void createUser(@RequestBody @Valid SignInRequest request) {
-
+    public ResponseEntity<String> createUser(
+            @RequestBody @Valid SignInRequest request) {
         userDetailsService.createUser(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

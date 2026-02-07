@@ -6,7 +6,9 @@ import dev.parkingApp.services.ReviewService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +24,28 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{spotId}")
-    public List<ReviewResponse> getSpotReviews(@PathVariable("spotId") @NotNull @Positive Long spotId) {
-        return reviewService.getSpotReviews(spotId);
+    public ResponseEntity<List<ReviewResponse>> getSpotReviews(
+            @PathVariable("spotId") @NotNull @Positive Long spotId) {
+        return new ResponseEntity<>(reviewService.getSpotReviews(spotId), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("#reviewDTO.authorId == authentication.principal.userId")
-    public ReviewResponse createReview(@RequestBody @Validated(ReviewRequest.Create.class) ReviewRequest reviewDTO) {
-        return reviewService.addReview(reviewDTO);
+    public ResponseEntity<ReviewResponse> createReview(
+            @RequestBody @Validated(ReviewRequest.Create.class) ReviewRequest reviewDTO) {
+        return new ResponseEntity<>(reviewService.createReview(reviewDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/{reviewId}")
     @PreAuthorize("#reviewDTO.authorId == authentication.principal.userId")
-    public ReviewResponse updateReview(@RequestBody @Validated(ReviewRequest.Update.class) ReviewRequest reviewDTO) {
-        return reviewService.updateReview(reviewDTO);
+    public ResponseEntity<ReviewResponse> updateReview(
+            @PathVariable("reviewId") Long reviewId,
+            @RequestBody @Validated(ReviewRequest.Update.class) ReviewRequest reviewDTO) {
+        return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewDTO), HttpStatus.OK);
     }
 
     @GetMapping
-    public List<ReviewResponse> getAllReviews() {
-        return reviewService.getAllReviews();
+    public ResponseEntity<List<ReviewResponse>> getAllReviews() {
+        return new ResponseEntity<>(reviewService.getAllReviews(), HttpStatus.OK);
     }
 }

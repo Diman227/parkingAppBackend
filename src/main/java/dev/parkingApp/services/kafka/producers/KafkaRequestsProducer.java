@@ -1,4 +1,4 @@
-package dev.parkingApp.services.kafka;
+package dev.parkingApp.services.kafka.producers;
 
 import dev.parkingApp.dtos.request.BookingRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +13,16 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaProducer {
+public class KafkaRequestsProducer {
 
-    @Value("${kafka.topic.name}")
-    private String topicName;
+    @Value("${kafka.topics.requests}")
+    private String topicRequestsName;
 
     private final KafkaTemplate<String, BookingRequest> kafkaTemplate;
 
-    public void sendMessageToKafka(BookingRequest booking) {
+    public void sendRequestMessageToKafka(BookingRequest booking) {
 
-        CompletableFuture<SendResult<String, BookingRequest>> response = kafkaTemplate.send(topicName, booking);
+        CompletableFuture<SendResult<String, BookingRequest>> response = kafkaTemplate.send(topicRequestsName, booking);
         response.whenComplete((result, ex) -> log.info(String.valueOf(result)));
         log.info("sent message to kafka");
     }

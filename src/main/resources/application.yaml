@@ -49,8 +49,10 @@ minio:
   bucket-name: pictures
 
 kafka:
-  topic:
-    name: bookings
+  topics:
+    requests: bookings-requests
+    responses: bookings-responses
+
 
 management:
   endpoints:

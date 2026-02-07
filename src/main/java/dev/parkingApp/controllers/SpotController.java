@@ -27,33 +27,34 @@ public class SpotController {
 
     @PostMapping
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
-    public SpotResponse addSpot(@RequestBody @Validated(SpotRequest.Create.class) SpotRequest spotDTO) {
-        return spotService.addSpot(spotDTO);
+    public ResponseEntity<SpotResponse> createSpot(
+            @RequestBody @Validated(SpotRequest.Create.class) SpotRequest spotDTO) {
+        return new ResponseEntity<>(spotService.addSpot(spotDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/{spotId}")
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
-    public SpotResponse updateSpot(@RequestBody @Validated(SpotRequest.Update.class) SpotRequest spotDTO) {
-        return spotService.updateSpot(spotDTO);
+    public ResponseEntity<SpotResponse> updateSpot(
+            @PathVariable("spotId") Long spotId,
+            @RequestBody @Validated(SpotRequest.Update.class) SpotRequest spotDTO) {
+        return new ResponseEntity<>(spotService.updateSpot(spotId, spotDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public Long deleteSpot(@PathVariable("id") @NotNull @Positive Long spotId) {
-        return spotService.deleteSpot(spotId);
+    @DeleteMapping("/{spotId}")
+    public ResponseEntity<Long> deleteSpot(
+            @PathVariable("spotId") @NotNull @Positive Long spotId) {
+        return new ResponseEntity<>(spotService.deleteSpot(spotId), HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/user")
-    public List<SpotResponse> getUserOwnedSpotsWithImages(@AuthenticationPrincipal AuthUser principal) {
-        return spotService.getUserOwnedSpotsWithImages(principal.getUserId());
+    public ResponseEntity<List<SpotResponse>> getUserOwnedSpotsWithImages(
+            @AuthenticationPrincipal AuthUser principal) {
+        return new ResponseEntity<>(spotService.getUserOwnedSpotsWithImages(principal.getUserId()), HttpStatus.OK);
     }
 
     @GetMapping
-    public List<SpotResponse> getAllSpots() {
-        return spotService.getAllSpots();
+    public ResponseEntity<List<SpotResponse>> getAllSpots() {
+        return new ResponseEntity<>(spotService.getAllSpots(), HttpStatus.OK);
     }
 
-    @GetMapping("hello")
-    ResponseEntity<String> hello() {
-        return new ResponseEntity<>("Hello World!!!", HttpStatus.OK);
-    }
 }

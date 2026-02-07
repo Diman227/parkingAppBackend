@@ -2,7 +2,6 @@ package dev.parkingApp.services;
 
 import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.dtos.response.ReviewResponse;
-import dev.parkingApp.entities.ImageEntity;
 import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
@@ -35,9 +34,8 @@ public class ReviewService {
     private final ImageMapper imageMapper;
 
     @Transactional
-    public ReviewResponse addReview(ReviewRequest reviewDTO) {
+    public ReviewResponse createReview(ReviewRequest reviewDTO) {
 
-        // todo add images
         if(!bookingRepository.hadUserBookingOfSpot(reviewDTO.getSpotId(), reviewDTO.getAuthorId(), LocalDateTime.now())) {
             throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
         }
@@ -62,14 +60,13 @@ public class ReviewService {
     public List<ReviewResponse> getSpotReviews(Long spotId) {
 
         if(!spotRepository.existsById(spotId)) throw new SpotNotFoundException("Spot wasn't found with id - " + spotId);
-        List<ReviewEntity> reviews = reviewRepository.getSpotReviews(spotId);
-        return reviewMapper.toListReviewResponses(reviews);
+        return reviewMapper.toListReviewResponses(reviewRepository.getSpotReviews(spotId));
     }
 
-    public ReviewResponse updateReview(ReviewRequest reviewDTO) {
+    public ReviewResponse updateReview(Long reviewId, ReviewRequest reviewDTO) {
 
-        ReviewEntity review = reviewRepository.findById(reviewDTO.getId()).orElseThrow(
-                () -> new ReviewNotFoundException("Review with id - " + reviewDTO.getId() + "- wasn't found"));
+        ReviewEntity review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new ReviewNotFoundException("Review with id - " + reviewId + "- wasn't found"));
 
         review.setRate(reviewDTO.getRate());
         review.setMessage(reviewDTO.getMessage());

@@ -5,20 +5,21 @@ import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.entities.BookingEntity;
 import dev.parkingApp.entities.SpotEntity;
 import dev.parkingApp.entities.UserEntity;
+import dev.parkingApp.exceptions.SpotBusyException;
 import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.repositories.BookingRepository;
 import dev.parkingApp.repositories.SpotRepository;
 import dev.parkingApp.repositories.UserRepository;
+import dev.parkingApp.services.kafka.producers.KafkaRequestsProducer;
+import dev.parkingApp.services.kafka.producers.KafkaResponsesProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,22 +34,37 @@ public class BookingService {
 
     private final BookingMapper bookingMapper;
 
+//    private final KafkaRequestsProducer kafkaRequestsProducer;
+//    private final KafkaResponsesProducer kafkaResponsesProducer;
+
     @Transactional
     public BookingResponse createBooking(BookingRequest bookingDTO){
 
         SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
-        BigDecimal pricePerHour = spot.getPrice();
+
+        if(bookingRepository.isSpotBusyInInterval(
+                bookingDTO.getSpotId(),
+                bookingDTO.getStartAt(),
+                bookingDTO.getEndAt()
+        )) {
+            throw new SpotBusyException("Unsuccessful attempt to book the spot with id - " + bookingDTO.getSpotId()
+                    + " in interval from " + bookingDTO.getStartAt() + " to " + bookingDTO.getEndAt());
+        }
 
         UserEntity renter = userRepository.getReferenceById(bookingDTO.getRenterId());
 
         BookingEntity booking = bookingMapper.toBookingEntity(bookingDTO);
 
-        booking.setTotalPrice(countTotalPrice(pricePerHour, bookingDTO.getStartAt(), bookingDTO.getEndAt()));
+        booking.setTotalPrice(countTotalPrice(spot.getPrice(), bookingDTO.getStartAt(), bookingDTO.getEndAt()));
         booking.setSpot(spot);
         booking.setRenter(renter);
         booking.setCreatedAt(LocalDateTime.now());
 
-        return bookingMapper.toBookingResponse(bookingRepository.save(booking));
+        BookingResponse response = bookingMapper.toBookingResponse(bookingRepository.save(booking));
+
+//        kafkaResponsesProducer.sendResponseMessageToKafka(response);
+
+        return response;
     }
 
     public List<BookingResponse> getUserBookings(Long userId) {
@@ -80,4 +96,5 @@ public class BookingService {
         Duration parkingTime = Duration.between(startAt,endAt);
         return pricePerHour.multiply(new BigDecimal(parkingTime.toHours()));
     }
+
 }

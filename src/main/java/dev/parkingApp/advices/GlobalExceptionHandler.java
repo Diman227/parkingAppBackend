@@ -56,4 +56,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(SpotBusyException.class)
+    public ResponseEntity<ExceptionResponse> handleSpotBusyException(SpotBusyException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

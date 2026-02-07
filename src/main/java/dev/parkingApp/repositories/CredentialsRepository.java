@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public interface CredentialsRepository extends CrudRepository<CredentialsEntity, Long> {
 
-    @Query(value = "SELECT c FROM CredentialsEntity c JOIN FETCH c.password WHERE c.phoneNumber = :phoneNumber")
+    @Query("""
+            SELECT c FROM CredentialsEntity c
+            JOIN FETCH c.password
+            WHERE c.phoneNumber = :phoneNumber
+            """)
     Optional<CredentialsEntity> findByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
 }

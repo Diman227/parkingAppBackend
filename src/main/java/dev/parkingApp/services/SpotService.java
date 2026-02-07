@@ -53,9 +53,10 @@ public class SpotService {
         return response;
     }
 
-    public SpotResponse updateSpot(SpotRequest spotDTO) {
+    public SpotResponse updateSpot(Long spotId, SpotRequest spotDTO) {
 
-        SpotEntity spot = spotRepository.findById(spotDTO.getId()).orElseThrow(() -> new SpotNotFoundException("Spot with id - " + spotDTO.getId() + " - wasn't found!"));
+        SpotEntity spot = spotRepository.findById(spotId).orElseThrow(
+                () -> new SpotNotFoundException("Spot with id - " + spotId + " - wasn't found!"));
 
         spot.setDescription(spotDTO.getDescription());
         spot.setPrice(spotDTO.getPrice());

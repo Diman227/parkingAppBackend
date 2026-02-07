@@ -1,6 +1,5 @@
 package dev.parkingApp.services;
 
-import dev.parkingApp.dtos.request.ChatRequest;
 import dev.parkingApp.dtos.response.ChatResponse;
 import dev.parkingApp.mappers.ChatMapper;
 import dev.parkingApp.repositories.ChatRepository;
@@ -17,7 +16,6 @@ public class ChatService {
     private final ChatMapper chatMapper;
     
     public List<ChatResponse> getUserChats(Long userId) {
-
         return chatMapper.toListChatResponses(chatRepository.getUserChats(userId));
     }
     
