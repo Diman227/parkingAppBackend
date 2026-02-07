@@ -33,8 +33,6 @@ public class ReviewRequest {
     @Max(value = 5, groups = {Create.class, Update.class})
     private BigDecimal rate;
 
-    private LocalDateTime createdAt;
-
     @NotNull(groups = {Create.class, Update.class})
     @Positive(groups = {Create.class, Update.class})
     private Long spotId;

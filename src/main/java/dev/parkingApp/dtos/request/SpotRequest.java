@@ -43,8 +43,6 @@ public class SpotRequest {
     @Positive(groups = {Create.class, Update.class})
     private BigDecimal price;
 
-    private LocalDateTime createdAt;
-
     @Valid
     private CoordinatesResponse location;
 

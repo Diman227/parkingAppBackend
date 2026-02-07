@@ -22,11 +22,11 @@ spring:
     debug: true
 
   liquibase:
-    drop-first: true
+#    drop-first: true
     enabled: true
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
 
 logging:
   level:
@@ -47,6 +47,10 @@ minio:
   access-key: admin12345
   secret-key: admin12345
   bucket-name: pictures
+
+kafka:
+  topic:
+    name: bookings
 
 management:
   endpoints:

@@ -2,7 +2,9 @@ package dev.parkingApp.controllers;
 
 import dev.parkingApp.dtos.request.BookingRequest;
 import dev.parkingApp.dtos.response.BookingResponse;
+import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.services.BookingService;
+import dev.parkingApp.services.kafka.KafkaProducer;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,9 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final KafkaProducer kafkaProducer;
+
+    private final BookingMapper bookingMapper;
 
     @GetMapping(value = "/{userId}/bookings")
     @PreAuthorize("#userId == authentication.principal.userId")
@@ -45,8 +50,9 @@ public class BookingController {
     }
 
     @PostMapping(value = "/bookings")
-    @PreAuthorize("#booking.renterId == authentication.principal.userId")
+    @PreAuthorize("#bookingDTO.renterId == authentication.principal.userId")
     public BookingResponse createBooking(@RequestBody @Validated(BookingRequest.Create.class) BookingRequest bookingDTO) {
+        kafkaProducer.sendMessageToKafka(bookingDTO);
         return bookingService.createBooking(bookingDTO);
     }
 
