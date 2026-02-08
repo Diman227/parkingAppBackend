@@ -3,6 +3,7 @@ package dev.parkingApp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,5 @@ public class ChatEntity {
     private UserEntity consumer;
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MessageEntity> messages;
+    private List<MessageEntity> messages = new ArrayList<>();
 }

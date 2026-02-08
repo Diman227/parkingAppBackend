@@ -20,4 +20,5 @@ public interface SpotRepository extends JpaRepository<SpotEntity, Long> {
 
     @Query("SELECT s FROM SpotEntity s JOIN FETCH s.coordinates")
     List<SpotEntity> getAllSpots();
+
 }

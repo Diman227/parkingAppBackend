@@ -40,6 +40,7 @@ public class ReviewService {
             throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
         }
 
+        //todo убрать в mapper
         ReviewEntity review = reviewMapper.toReviewEntity(reviewDTO);
 
         SpotEntity spot = spotRepository.getReferenceById(reviewDTO.getSpotId());

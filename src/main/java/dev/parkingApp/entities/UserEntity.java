@@ -3,6 +3,7 @@ package dev.parkingApp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,14 +32,13 @@ public class UserEntity {
     @JoinColumn(name = "credentials_id", nullable = false)
     private CredentialsEntity credentials;
 
-    // todo посмотреть, зачем сразу инициализировать пустым массивом
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<SpotEntity> ownedSpots;
+    private List<SpotEntity> ownedSpots = new ArrayList<>();
 
     @OneToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<BookingEntity> bookings;
+    private List<BookingEntity> bookings = new ArrayList<>();
 
     // todo связь неправильная, надо будет подумать и переделать
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<ChatEntity> chats;
+    private List<ChatEntity> chats = new ArrayList<>();
 }

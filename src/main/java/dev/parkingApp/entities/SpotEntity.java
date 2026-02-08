@@ -6,6 +6,7 @@ import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,7 @@ public class SpotEntity {
     @Column(nullable = false)
     private String address;
 
-    // todo delete later
-    @Column(nullable = false)
+    @Transient
     private BigDecimal rate;
 
     @Column(nullable = false)
@@ -42,13 +42,22 @@ public class SpotEntity {
     private CoordinatesEntity coordinates;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "owner_id", nullable = false)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     private UserEntity owner;
 
+    @Column(name = "owner_id")
+    private Long ownerId;
+
     @OneToMany(mappedBy = "spot",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImageEntity> images;
+    private List<ImageEntity> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "spot", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewEntity> reviews;
+    private List<ReviewEntity> reviews = new ArrayList<>();
+
+    // todo calculate in db
+    @PostLoad
+    public void setSpotRate(){
+        this.rate = new BigDecimal(5);
+    }
 
 }

@@ -55,6 +55,7 @@ public class BookingService {
 
         BookingEntity booking = bookingMapper.toBookingEntity(bookingDTO);
 
+        //todo убрать в mapper
         booking.setTotalPrice(countTotalPrice(spot.getPrice(), bookingDTO.getStartAt(), bookingDTO.getEndAt()));
         booking.setSpot(spot);
         booking.setRenter(renter);

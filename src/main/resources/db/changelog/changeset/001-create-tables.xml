@@ -131,7 +131,6 @@
             <column name="price" type="numeric(16,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="rate" type="numeric(7,5)"/>
             <column name="created_at" type="timestamp(6) without time zone">
                 <constraints nullable="false"/>
             </column>

@@ -29,6 +29,7 @@ public class UserService {
         UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow(
                 () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!")
         );
+        // todo убрать в маппер
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
