@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<UserResponse> getUser(
             @AuthenticationPrincipal AuthUser principal) {
-        return new ResponseEntity<>(userService.getUser(principal.getCredentialsId()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUser(principal.getUserId()), HttpStatus.OK);
     }
 
     @PutMapping

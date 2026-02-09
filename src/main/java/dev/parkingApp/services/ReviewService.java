@@ -41,13 +41,7 @@ public class ReviewService {
         }
 
         //todo убрать в mapper
-        ReviewEntity review = reviewMapper.toReviewEntity(reviewDTO);
-
-        SpotEntity spot = spotRepository.getReferenceById(reviewDTO.getSpotId());
-        UserEntity author = userRepository.getReferenceById(reviewDTO.getAuthorId());
-
-        review.setSpot(spot);
-        review.setAuthor(author);
+        ReviewEntity review = reviewMapper.createReview(reviewDTO);
 
         ReviewResponse response = reviewMapper.toReviewResponse(reviewRepository.save(review));
 

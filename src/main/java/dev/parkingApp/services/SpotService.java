@@ -37,7 +37,7 @@ public class SpotService {
     private final CoordinatesMapper coordinatesMapper;
 
     @Transactional
-    public SpotResponse addSpot(SpotRequest spotDTO) {
+    public SpotResponse createSpot(SpotRequest spotDTO) {
 
         // todo ? - проверка за существование
 

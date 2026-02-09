@@ -32,10 +32,17 @@ public class BookingEntity {
     private BigDecimal totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rented_spot_id", nullable = false)
+    @JoinColumn(name = "rented_spot_id", insertable = false, updatable = false)
     private SpotEntity spot;
 
+    @Column(name = "rented_spot_id")
+    private Long spotId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "renter_id", nullable = false)
+    @JoinColumn(name = "renter_id", insertable = false, updatable = false)
     private UserEntity renter;
+
+    @Column(name = "renter_id")
+    private Long renterId;
+
 }

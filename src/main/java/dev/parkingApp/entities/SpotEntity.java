@@ -41,17 +41,17 @@ public class SpotEntity {
     @JoinColumn(name = "coordinates_id")
     private CoordinatesEntity coordinates;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", insertable = false, updatable = false)
     private UserEntity owner;
 
     @Column(name = "owner_id")
     private Long ownerId;
 
-    @OneToMany(mappedBy = "spot",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "spot",fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "spot", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "spot", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ReviewEntity> reviews = new ArrayList<>();
 
     // todo calculate in db

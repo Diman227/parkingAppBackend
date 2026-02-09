@@ -31,12 +31,18 @@ public class ReviewEntity {
     private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spot_id", nullable = false)
+    @JoinColumn(name = "spot_id", insertable = false, updatable = false)
     private SpotEntity spot;
 
+    @Column(name = "spot_id")
+    private Long spotId;
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
     private UserEntity author;
+
+    @Column(name = "author_id")
+    private Long authorId;
 
     @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();

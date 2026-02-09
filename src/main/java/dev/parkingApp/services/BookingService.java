@@ -51,21 +51,15 @@ public class BookingService {
                     + " in interval from " + bookingDTO.getStartAt() + " to " + bookingDTO.getEndAt());
         }
 
-        UserEntity renter = userRepository.getReferenceById(bookingDTO.getRenterId());
+        BookingEntity booking = bookingMapper.createBookingEntity(bookingDTO);
 
-        BookingEntity booking = bookingMapper.toBookingEntity(bookingDTO);
-
-        //todo убрать в mapper
         booking.setTotalPrice(countTotalPrice(spot.getPrice(), bookingDTO.getStartAt(), bookingDTO.getEndAt()));
-        booking.setSpot(spot);
-        booking.setRenter(renter);
-        booking.setCreatedAt(LocalDateTime.now());
 
-        BookingResponse response = bookingMapper.toBookingResponse(bookingRepository.save(booking));
+        bookingRepository.save(booking);
 
 //        kafkaResponsesProducer.sendResponseMessageToKafka(response);
 
-        return response;
+        return bookingMapper.toBookingResponse(booking);
     }
 
     public List<BookingResponse> getUserBookings(Long userId) {

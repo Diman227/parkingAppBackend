@@ -29,7 +29,7 @@ public class SpotController {
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
     public ResponseEntity<SpotResponse> createSpot(
             @RequestBody @Validated(SpotRequest.Create.class) SpotRequest spotDTO) {
-        return new ResponseEntity<>(spotService.addSpot(spotDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(spotService.createSpot(spotDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{spotId}")

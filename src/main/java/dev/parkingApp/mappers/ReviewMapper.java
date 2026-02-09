@@ -24,6 +24,10 @@ public interface ReviewMapper {
 
     ReviewEntity toReviewEntity(ReviewRequest reviewRequest);
 
+    @Mapping(target = "author.id", source = "authorId")
+    @Mapping(target = "spot.id", source = "spotId")
+    ReviewEntity createReview(ReviewRequest reviewRequest);
+
     default String getUserFullName(UserEntity author) {
         return author.getSurname() + " " + author.getName();
     }

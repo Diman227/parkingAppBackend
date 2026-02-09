@@ -52,8 +52,6 @@ public class SpotRequest {
 
     private List<ImageRequest> images;
 
-    private List<ReviewRequest> reviews;
-
     public interface Create {}
     public interface Update {}
 

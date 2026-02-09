@@ -16,10 +16,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserResponse getUser(Long credentialsId) {
+    public UserResponse getUser(Long userId) {
 
-        UserEntity user = userRepository.getUserByCredentials(credentialsId).orElseThrow(
-                () -> new UserNotFoundException("User with credentialsId - " + credentialsId + " - wasn't found!"));
+        UserEntity user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException("User with id - " + userId + " - wasn't found!"));
+
         return userMapper.toUserResponse(user);
 
     }
@@ -27,13 +28,10 @@ public class UserService {
     public UserResponse editUserInfo(UserRequest userDTO) {
 
         UserEntity user = userRepository.findById(userDTO.getId()).orElseThrow(
-                () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!")
-        );
-        // todo убрать в маппер
-        user.setName(userDTO.getName());
-        user.setSurname(userDTO.getSurname());
-        user.setEmail(userDTO.getEmail());
+                () -> new UserNotFoundException("User with id - " + userDTO.getId() + " - wasn't found!"));
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        userRepository.save(userMapper.editUserEntity(user, userDTO));
+
+        return userMapper.toUserResponse(user);
     }
 }
