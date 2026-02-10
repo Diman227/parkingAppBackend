@@ -56,7 +56,7 @@
         <createTable tableName="credentials">
             <column name="id" type="bigint" autoIncrement="true"/>
             <column name="password_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="credentials_password_unique_constraint"/>
+                <constraints nullable="true"/>
             </column>
             <column name="phone_number" type="varchar(16)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="credentials_phoneNumber_unique_constraint"/>
@@ -88,9 +88,7 @@
             <column name="author_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="image_id" type="bigint">
-                <constraints unique="true" uniqueConstraintName="message_image_unique_constraint"/>
-            </column>
+            <column name="image_id" type="bigint"/>
             <column name="reply_to_message_id" type="bigint"/>
         </createTable>
 
