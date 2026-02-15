@@ -38,9 +38,14 @@ logging:
             sql:
               BasicBinder: TRACE
 
-token:
-  signing:
-    key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
+jwt:
+  access-token:
+    access-key: CnGY3o5sykUvfkuINeJVjfDp6chuK2pCH12V2cQ9aAQ
+    expiration-time: 3600
+
+  refresh-token:
+    refresh-key: 8G9J3BQkoFedOClXMXMq6iMWLrBVWw78dTGeaZ7t3eP
+    expiration-time: 1_209_600
 
 minio:
   endpoint: http://localhost:9000

@@ -8,7 +8,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changeset/003-add-indexes.xml
+      file: changeset/003-create-indexes.sql
       relativeToChangelogFile: true
 
   - include:
@@ -18,3 +18,7 @@ databaseChangeLog:
   - include:
       file: changeset/005-insert-data.sql
       relativeToChangelogFile: true
+
+#  - include:
+#      file: changeset/006-generate-data.sql
+#      relativeToChangelogFile: true

@@ -12,27 +12,22 @@ import lombok.Data;
 @AllArgsConstructor
 public class SignInRequest {
 
-    @NotNull
     @NotBlank
     @Size(max = 15)
     private String phoneNumber;
 
-    @NotNull
     @NotBlank
     @Size(max = 128)
     private String password;
 
-    @NotNull
     @NotBlank
     @Size(max = 128)
     private String surname;
 
-    @NotNull
     @NotBlank
     @Size(max = 128)
     private String name;
 
-    @NotNull
     @NotBlank
     @Size(max = 64)
     private String email;

@@ -62,4 +62,35 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidRefreshTokenException(InvalidRefreshTokenException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleRefreshTokenNotFoundException(RefreshTokenNotFoundException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ValidationTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleValidationTokenException(ValidationTokenException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ExceptionResponse> handleTokenException(TokenException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidTokenException(InvalidTokenException ex) {
+        log.warn(ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+
 }

@@ -12,14 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TokenRequest {
+public class LogInRequest {
 
-    @NotNull
     @NotBlank
     @Size(max = 20)
     private String phoneNumber;
 
-    @NotNull
     @NotBlank
     @Size(max = 128)
     private String password;

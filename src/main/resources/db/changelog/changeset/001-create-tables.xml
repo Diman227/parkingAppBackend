@@ -156,6 +156,16 @@
             </column>
         </createTable>
 
+        <createTable tableName="refresh_tokens">
+            <column name="id" type = "bigint" autoIncrement="true"/>
+            <column name="refresh_token" type = "varchar(256)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="refresh_token_unique_constraint"/>
+            </column>
+            <column name="credentials_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="refresh_credentials_unique_constraints"/>
+            </column>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

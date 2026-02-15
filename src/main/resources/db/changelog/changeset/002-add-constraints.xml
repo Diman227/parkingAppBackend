@@ -81,6 +81,11 @@
         <addForeignKeyConstraint baseTableName="users" baseColumnNames="credentials_id"
                                  constraintName="user_credentials_fk" referencedTableName="credentials"
                                  referencedColumnNames="id"/>
+
+<!--        &lt;!&ndash; table refresh_tokens &ndash;&gt;-->
+<!--        <addForeignKeyConstraint baseTableName="refresh_tokens" baseColumnNames="credentials_id"-->
+<!--                                 constraintName="refresh_credentials_fk" referencedTableName="credentials"-->
+<!--                                 referencedColumnNames="id"/>-->
     </changeSet>
 
 </databaseChangeLog> 
