@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.KafkaListenerConfigurer;
 import org.springframework.kafka.config.*;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.CommonErrorHandler;
@@ -25,8 +27,7 @@ import java.util.Map;
 @Slf4j
 @Configuration
 @EnableKafka
-@RequiredArgsConstructor
-public class KafkaConfig {
+public class KafkaConfig implements KafkaListenerConfigurer {
 
     @Value("${kafka.topics.spots}")
     private String topicSpotsName;
@@ -34,8 +35,13 @@ public class KafkaConfig {
     @Value("${kafka.topics.users}")
     private String topicUsersName;
 
+    @Autowired
     private LocalValidatorFactoryBean validator;
 
+    @Override
+    public void configureKafkaListeners(KafkaListenerEndpointRegistrar registrar) {
+        registrar.setValidator(this.validator);
+    }
 
     @Bean
     public NewTopic createSpotTopic() {
@@ -109,6 +115,8 @@ public class KafkaConfig {
 
         return factory;
     }
+
+
 
 
 }
