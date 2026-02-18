@@ -12,6 +12,8 @@ public interface ChatRepository extends CrudRepository<ChatEntity, Long> {
 
     @Query("""
             SELECT c FROM ChatEntity c
+            LEFT JOIN FETCH c.owner
+            LEFT JOIN FETCH c.consumer
             WHERE c.owner.id = :userId
             OR c.consumer.id = :userId
             """)

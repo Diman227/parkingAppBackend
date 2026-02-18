@@ -49,7 +49,7 @@ public class SpotController {
     @GetMapping("/user")
     public ResponseEntity<List<SpotResponse>> getUserOwnedSpotsWithImages(
             @AuthenticationPrincipal AuthUser principal) {
-        return new ResponseEntity<>(spotService.getUserOwnedSpotsWithImages(principal.getUserId()), HttpStatus.OK);
+        return new ResponseEntity<>(spotService.getUserOwnedSpots(principal.getUserId()), HttpStatus.OK);
     }
 
     @GetMapping

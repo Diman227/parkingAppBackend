@@ -4,8 +4,6 @@ import dev.parkingApp.dtos.request.BookingRequest;
 import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.services.BookingService;
-import dev.parkingApp.services.kafka.consumers.KafkaResponsesConsumer;
-import dev.parkingApp.services.kafka.producers.KafkaRequestsProducer;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +22,6 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final KafkaRequestsProducer kafkaRequestProducer;
-    private final KafkaResponsesConsumer kafkaResponsesConsumer;
 
     private final BookingMapper bookingMapper;
 

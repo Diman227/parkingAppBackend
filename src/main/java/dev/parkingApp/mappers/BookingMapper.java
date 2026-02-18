@@ -26,8 +26,8 @@ public interface BookingMapper {
     BookingEntity toBookingEntity(BookingRequest bookingRequest);
 
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "spot.id", source = "spotId")
-    @Mapping(target = "renter.id", source = "renterId")
+    @Mapping(target = "spotId", source = "spotId")
+    @Mapping(target = "renterId", source = "renterId")
     BookingEntity createBookingEntity(BookingRequest bookingRequest);
 
 }

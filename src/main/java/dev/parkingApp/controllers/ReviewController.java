@@ -43,9 +43,4 @@ public class ReviewController {
             @RequestBody @Validated(ReviewRequest.Update.class) ReviewRequest reviewDTO) {
         return new ResponseEntity<>(reviewService.updateReview(reviewId, reviewDTO), HttpStatus.OK);
     }
-
-    @GetMapping
-    public ResponseEntity<List<ReviewResponse>> getAllReviews() {
-        return new ResponseEntity<>(reviewService.getAllReviews(), HttpStatus.OK);
-    }
 }

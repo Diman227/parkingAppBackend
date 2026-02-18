@@ -12,14 +12,11 @@ public interface ReviewRepository extends CrudRepository<ReviewEntity, Long> {
 
     @Query("""
             SELECT r FROM ReviewEntity r
-            LEFT JOIN FETCH r.author
+            JOIN FETCH r.author
             LEFT JOIN FETCH r.images i
             WHERE r.spot.id = :spotId
             """)
     List<ReviewEntity> getSpotReviews(@Param("spotId") Long spotId);
-
-    @Query("SELECT r FROM ReviewEntity r")
-    List<ReviewEntity> getAllReviews();
 
     @Query("""
             SELECT COALESCE(AVG(r.rate), 0.0, COUNT(r.id))

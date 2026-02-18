@@ -40,7 +40,6 @@ public class ReviewService {
             throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
         }
 
-        //todo убрать в mapper
         ReviewEntity review = reviewMapper.createReview(reviewDTO);
 
         ReviewResponse response = reviewMapper.toReviewResponse(reviewRepository.save(review));
@@ -67,9 +66,5 @@ public class ReviewService {
         review.setMessage(reviewDTO.getMessage());
 
         return reviewMapper.toReviewResponse(reviewRepository.save(review));
-    }
-
-    public List<ReviewResponse> getAllReviews() {
-        return reviewMapper.toListReviewResponses(reviewRepository.getAllReviews());
     }
 }

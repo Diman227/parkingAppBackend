@@ -56,10 +56,11 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     @Query("""
             SELECT count(b) > 0 FROM BookingEntity b
             WHERE b.spot.id = :spotId
-            AND b.startAt < :endAt
-            AND b.endAt > :startAt
+            AND b.startAt <= :endAt
+            AND b.endAt >= :startAt
             """)
     boolean isSpotBusyInInterval(@Param("spotId") Long spotId,
                                  @Param("startAt") LocalDateTime startAt,
                                  @Param("endAt") LocalDateTime endAt);
+
 }

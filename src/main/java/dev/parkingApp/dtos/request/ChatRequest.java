@@ -1,11 +1,11 @@
 package dev.parkingApp.dtos.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,9 +15,11 @@ public class ChatRequest {
 
     private Long id;
 
+    @NotNull
+    @Positive
     private Long ownerId;
 
+    @NotNull
+    @Positive
     private Long consumerId;
-
-    private List<MessageRequest> messages;
 }

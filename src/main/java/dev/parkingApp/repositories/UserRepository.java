@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             SELECT u FROM UserEntity u
             JOIN FETCH u.credentials c
             JOIN FETCH c.password
-            WHERE u.credentials.phoneNumber = :username
+            WHERE c.phoneNumber = :username
             """)
     Optional <UserEntity> getUserByUsername(@Param("username") String username);
 }

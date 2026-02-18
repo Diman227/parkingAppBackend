@@ -24,9 +24,9 @@ public class BookingResponse {
 
     private BigDecimal totalPrice;
 
-    private SpotResponse spot;
+    private Long spotId;
 
-    private UserResponse renter;
+    private Long renterId;
 
 }
 

@@ -27,10 +27,8 @@ public interface SpotMapper {
     @Mapping(target = "rate", ignore = true)
     SpotEntity toSpotEntity(SpotRequest spotRequest);
 
-    // todo не достается user
-    // переписать запрос в бд самому
     @Mapping(target = "coordinates", source = "location")
-    @Mapping(target = "owner.id", source = "ownerId")
+    @Mapping(target = "ownerId", source = "ownerId")
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
     SpotEntity createSpotEntity(SpotRequest spotRequest);
 

@@ -23,21 +23,14 @@ public class ReviewResponse {
 
     private Long id;
 
-    @Length(max = 256, message = "Максимальный объем отзыва - 256 символов")
     private String message;
 
-    @NotNull
-    @Min(1)
-    @Max(5)
     private BigDecimal rate;
 
     private LocalDateTime createdAt;
 
-    @NotNull
-    @Positive
     private Long reviewedSpotId;
 
-    @NotNull
     private String authorFullName;
 
     private List<ImageResponse> images;

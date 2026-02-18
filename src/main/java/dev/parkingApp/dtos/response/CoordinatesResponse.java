@@ -15,11 +15,7 @@ public class CoordinatesResponse {
 
     private Long  id;
 
-    @NotNull
-    @NotBlank
     private String lat;
 
-    @NotNull
-    @NotBlank
     private String lon;
 }

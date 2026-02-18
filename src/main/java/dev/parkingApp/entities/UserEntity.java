@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
 @Table(name = "users")
 public class UserEntity {
@@ -38,7 +37,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<BookingEntity> bookings = new ArrayList<>();
 
-    // todo связь неправильная, надо будет подумать и переделать
+    // todo связь надо будет подумать и переделать
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<ChatEntity> chats = new ArrayList<>();
 }
