@@ -1,8 +1,7 @@
 package dev.parkingApp.services.auth;
 
 import dev.parkingApp.dtos.auth.AuthUser;
-import dev.parkingApp.exceptions.TokenException;
-import dev.parkingApp.exceptions.ValidationTokenException;
+import dev.parkingApp.exceptions.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -46,12 +45,17 @@ public class JwtFilter extends OncePerRequestFilter {
         if (token != null) {
             try {
                 claims = tokenManager.validateAccessToken(token);
+                if ( claims == null) {
+                    response.sendError(401, "Invalid token's payload");
+                    return;
+                }
             }
-            catch (TokenException ex) {
-                log.error("Token Exception: {}", ex.getMessage());
-                // todo тут надо уже ответ бы вернуть
+            catch (InvalidTokenException ex) {
+                log.error("Invalid Token Exception: {}", ex.getMessage());
+                response.sendError(401, "Unsuccessful token validation");
+                return;
             }
-            if( claims != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 final AuthUser userDetails = authUserDetailsService.loadUserByUsername(claims.getSubject());
                 final UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

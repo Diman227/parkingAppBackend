@@ -4,6 +4,7 @@ import dev.parkingApp.dtos.response.ExceptionResponse;
 import dev.parkingApp.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.errors.RecordDeserializationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -80,17 +81,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(TokenException.class)
-    public ResponseEntity<ExceptionResponse> handleTokenException(TokenException ex) {
-        log.warn(ex.getMessage());
-        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ExceptionResponse> handleInvalidTokenException(InvalidTokenException ex) {
         log.warn(ex.getMessage());
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(RecordDeserializationException.class)
+    public void handleRecordDeserializationException(RecordDeserializationException ex) {
+        log.warn("Error in deserialization kafka's message - {}", ex.getMessage());
+    }
+
 
 
 }

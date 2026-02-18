@@ -2,22 +2,17 @@ package dev.parkingApp.services.auth;
 
 import dev.parkingApp.dtos.auth.AuthUser;
 import dev.parkingApp.exceptions.ExpiredTokenException;
-import dev.parkingApp.exceptions.InvalidRefreshTokenException;
 import dev.parkingApp.exceptions.InvalidTokenException;
-import dev.parkingApp.exceptions.ValidationTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Component

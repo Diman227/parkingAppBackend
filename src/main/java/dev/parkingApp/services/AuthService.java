@@ -17,11 +17,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -58,7 +56,7 @@ public class AuthService {
 
         final Optional<RefreshTokenEntity> existingRefreshToken = refreshTokenRepository.findTokenByCredentialsId(credentialsId);
 
-        if(existingRefreshToken.isPresent()) {
+        if (existingRefreshToken.isPresent()) {
             String refreshToken = existingRefreshToken.get().getRefreshToken();
             try {
                 tokenManager.validateRefreshToken(refreshToken);
@@ -102,13 +100,15 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+
+        log.info("Saved user is - {}", user.toString());
     }
 
     public TokenResponse refreshTokens(RefreshTokenRequest refreshTokenRequest, boolean refreshBothTokens)  {
 
         final Claims refreshClaims = tokenManager.validateRefreshToken(refreshTokenRequest.getRefreshToken());
 
-        if(refreshClaims == null) throw new InvalidRefreshTokenException("Invalid Refresh token!");
+        if (refreshClaims == null) throw new InvalidRefreshTokenException("Invalid Refresh token!");
 
         final Long credentialsId = refreshClaims.get("credentialsId", Long.class);
 
@@ -123,7 +123,7 @@ public class AuthService {
         final AuthUser authUser = authUserDetailsService.loadUserByUsername(refreshClaims.getSubject());
         final String accessToken = tokenManager.generateAccessToken(authUser);
 
-        if(refreshBothTokens) {
+        if (refreshBothTokens) {
             refreshToken.setRefreshToken(tokenManager.generateRefreshToken(authUser));
             refreshTokenRepository.save(refreshToken);
 

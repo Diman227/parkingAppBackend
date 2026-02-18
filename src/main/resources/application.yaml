@@ -55,8 +55,8 @@ minio:
 
 kafka:
   topics:
-    requests: bookings-requests
-    responses: bookings-responses
+    spots: spots
+    users: users
 
 
 management:

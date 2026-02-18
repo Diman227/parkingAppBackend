@@ -1,23 +1,23 @@
 package dev.parkingApp.configurations;
 
-import dev.parkingApp.dtos.request.BookingRequest;
-import dev.parkingApp.dtos.response.BookingResponse;
+import dev.parkingApp.dtos.auth.SignInRequest;
+import dev.parkingApp.dtos.request.SpotRequest;
+import dev.parkingApp.services.kafka.KafkaExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.kafka.config.*;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.CommonErrorHandler;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
-import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,106 +28,87 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaConfig {
 
-    @Value("${kafka.topics.requests}")
-    private String topicRequestsName;
+    @Value("${kafka.topics.spots}")
+    private String topicSpotsName;
 
-    @Value("${kafka.topics.responses}")
-    private String topicResponsesName;
+    @Value("${kafka.topics.users}")
+    private String topicUsersName;
+
+    private LocalValidatorFactoryBean validator;
 
 
     @Bean
-    public NewTopic createRequestsTopic() {
+    public NewTopic createSpotTopic() {
         log.info("Kafka's partition is creating");
         return TopicBuilder
-                .name(topicRequestsName)
+                .name(topicSpotsName)
                 .build();
     }
 
-    @Bean NewTopic createResponsesTopic() {
+    @Bean NewTopic createUserTopic() {
         return TopicBuilder
-                .name(topicResponsesName)
+                .name(topicUsersName)
                 .build();
     }
 
     @Bean
-    public ProducerFactory<String, BookingRequest> producerRequestsFactory() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
-        log.info("ProducerRequestsFactory created");
-        return new DefaultKafkaProducerFactory<>(config);
-    }
-
-    @Bean
-    public ProducerFactory<String, BookingResponse> producerResponsesFactory() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
-        log.info("ProducerResponsesFactory created");
-        return new DefaultKafkaProducerFactory<>(config);
-    }
-
-    @Bean
-    public ConsumerFactory<String, BookingRequest> consumerRequestsFactory() {
+    public ConsumerFactory<String, SpotRequest> consumerSpotsFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-requests");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-spots");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, SpotRequest.class.getName());
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "*");
-        log.info("ConsumerRequestsFactory created");
+        log.info("ConsumerSpotsFactory created");
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
     @Bean
-    public ConsumerFactory<String, BookingResponse> consumerResponsesFactory() {
+    public ConsumerFactory<String, SignInRequest> consumerUsersFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-responses");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-users");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, SignInRequest.class.getName());
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "*");
-        log.info("ConsumerResponsesFactory created");
+        log.info("ConsumerUsersFactory created");
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
     @Bean
-    public KafkaTemplate<String, BookingRequest> kafkaRequestTemplate(
-            ProducerFactory<String, BookingRequest> producerFactory
-    ) {
-        return new KafkaTemplate<>(producerFactory);
+    public CommonErrorHandler commonErrorHandler() {
+        return new KafkaExceptionHandler();
     }
 
-    @Bean
-    public KafkaTemplate<String, BookingResponse> kafkaResponseTemplate(
-            ProducerFactory<String, BookingResponse> producerFactory
+    @Bean(name = "kafkaListenerSpotsContainerFactory")
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, SpotRequest>> kafkaListenerSpotsContainerFactory (
+            ConsumerFactory<String, SpotRequest> consumerFactory,
+            CommonErrorHandler commonErrorHandler
     ) {
-        return new KafkaTemplate<>(producerFactory);
+        ConcurrentKafkaListenerContainerFactory<String, SpotRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(consumerFactory);
+        factory.setConcurrency(1);
+        factory.setCommonErrorHandler(commonErrorHandler);
+
+        return factory;
     }
 
-    @Bean(name = "kafkaListenerRequestContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory kafkaListenerRequestsContainerFactory(
-            ConsumerFactory<String, BookingRequest> consumerFactory
+    @Bean(name = "kafkaListenerUsersContainerFactory")
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, SignInRequest>> kafkaListenerUsersContainerFactory (
+            ConsumerFactory<String, SignInRequest> consumerFactory,
+            CommonErrorHandler commonErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
-        containerFactory.setConsumerFactory(consumerFactory);
+        ConcurrentKafkaListenerContainerFactory<String, SignInRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
-        containerFactory.setConcurrency(1);
+        factory.setConsumerFactory(consumerFactory);
+        factory.setConcurrency(1);
+        factory.setCommonErrorHandler(commonErrorHandler);
 
-        return containerFactory;
+        return factory;
     }
 
-    @Bean(name = "kafkaListenerResponseContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory kafkaListenerResponsesContainerFactory(
-            ConsumerFactory<String, BookingResponse> consumerFactory
-    ) {
-        ConcurrentKafkaListenerContainerFactory containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
-        containerFactory.setConsumerFactory(consumerFactory);
 
-        containerFactory.setConcurrency(1);
-
-        return containerFactory;
-    }
 }

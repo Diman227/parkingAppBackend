@@ -4,24 +4,21 @@ import dev.parkingApp.dtos.request.SpotRequest;
 import dev.parkingApp.dtos.response.ImageResponse;
 import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
-import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.SpotNotFoundException;
-import dev.parkingApp.exceptions.UserNotFoundException;
-import dev.parkingApp.mappers.CoordinatesMapper;
 import dev.parkingApp.mappers.ImageMapper;
 import dev.parkingApp.mappers.SpotMapper;
 import dev.parkingApp.repositories.ImageRepository;
 import dev.parkingApp.repositories.ReviewRepository;
 import dev.parkingApp.repositories.SpotRepository;
-import dev.parkingApp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SpotService {
@@ -34,12 +31,9 @@ public class SpotService {
 
     private final ImageMapper imageMapper;
     private final SpotMapper spotMapper;
-    private final CoordinatesMapper coordinatesMapper;
 
     @Transactional
     public SpotResponse createSpot(SpotRequest spotDTO) {
-
-        // todo ? - проверка за существование
 
         SpotEntity spot = spotMapper.createSpotEntity(spotDTO);
 
@@ -47,8 +41,10 @@ public class SpotService {
 
         SpotResponse response = spotMapper.toSpotResponse(spotRepository.save(spot));
 
+        log.info("Saved spot is - {}", spot.toString());
+
         if(spotDTO.getImages() != null && !spotDTO.getImages().isEmpty()) {
-            // todo stop docker
+            // todo
             List<ImageResponse> images = imageAttachmentService.attachImagesToSpot(
                     response.getId(),
                     spotDTO.getImages());
@@ -73,15 +69,16 @@ public class SpotService {
         return spotId;
     }
 
-    public List<SpotResponse> getUserOwnedSpotsWithImages(Long userId) {
-        return spotMapper.toListSpotResponses(spotRepository.getUserOwnedSpots(userId));
+    public List<SpotResponse> getUserOwnedSpots(Long userId) {
+        List<SpotEntity> spot = spotRepository.getUserOwnedSpots(userId);
+        return spotMapper.toListSpotResponses(spot);
     }
 
     public List<SpotResponse> getAllSpots() {
         return spotMapper.toListSpotResponses(spotRepository.getAllSpots());
     }
 
-    // todo ???
+    // todo
     public BigDecimal calculateSpotRating(Long spotId) {
         return reviewRepository.calculateSpotRating(spotId);
     }

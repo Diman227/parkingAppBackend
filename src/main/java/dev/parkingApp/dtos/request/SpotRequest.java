@@ -2,14 +2,12 @@ package dev.parkingApp.dtos.request;
 
 import dev.parkingApp.dtos.response.CoordinatesResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.jackson.autoconfigure.JacksonProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,16 +19,15 @@ import java.util.List;
 @NoArgsConstructor
 public class SpotRequest {
 
+    @Null(groups = BookingRequest.Create.class)
     @NotNull(groups = BookingRequest.Update.class)
     @Positive(groups = BookingRequest.Update.class)
     private Long id;
 
-    @NotNull(groups = {Create.class, Update.class})
     @NotBlank(groups = {Create.class, Update.class})
     @Size(min = 1, max = 256, groups = {Create.class, Update.class})
     private String description;
 
-    @NotNull(groups = {Create.class, Update.class})
     @NotBlank(groups = {Create.class, Update.class})
     @Size(min = 1, max = 256, groups = {Create.class, Update.class})
     private String address;
@@ -44,7 +41,7 @@ public class SpotRequest {
     private BigDecimal price;
 
     @Valid
-    private CoordinatesResponse location;
+    private CoordinatesRequest location;
 
     @NotNull(groups = {Create.class, Update.class})
     @Positive(groups = {Create.class, Update.class})

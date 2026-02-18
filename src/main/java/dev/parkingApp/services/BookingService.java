@@ -3,15 +3,10 @@ package dev.parkingApp.services;
 import dev.parkingApp.dtos.request.BookingRequest;
 import dev.parkingApp.dtos.response.BookingResponse;
 import dev.parkingApp.entities.BookingEntity;
-import dev.parkingApp.entities.SpotEntity;
-import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.SpotBusyException;
 import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.repositories.BookingRepository;
 import dev.parkingApp.repositories.SpotRepository;
-import dev.parkingApp.repositories.UserRepository;
-import dev.parkingApp.services.kafka.producers.KafkaRequestsProducer;
-import dev.parkingApp.services.kafka.producers.KafkaResponsesProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,34 +25,47 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final SpotRepository spotRepository;
-    private final UserRepository userRepository;
 
     private final BookingMapper bookingMapper;
-
-//    private final KafkaRequestsProducer kafkaRequestsProducer;
-//    private final KafkaResponsesProducer kafkaResponsesProducer;
 
     @Transactional
     public BookingResponse createBooking(BookingRequest bookingDTO){
 
-        SpotEntity spot = spotRepository.getReferenceById(bookingDTO.getSpotId());
+        log.info("Транзакция создания аренды {} начинает работу", Thread.currentThread().getName());
 
-        if(bookingRepository.isSpotBusyInInterval(
+        BigDecimal spotPrice = spotRepository.getSpotPrice(bookingDTO.getSpotId());
+
+        log.info("Получена блокировка на спот {}", bookingDTO.getSpotId());
+
+        //  для проверки
+//        try {
+//            Thread.sleep(10000); //
+//        } catch (InterruptedException e) {}
+
+        if(bookingDTO.getEndAt().isBefore(bookingDTO.getStartAt())) {
+            throw new SpotBusyException("Unsuccessful attempt to book the spot with id - " + bookingDTO.getSpotId()
+                    + " in interval from " + bookingDTO.getStartAt() + " to " + bookingDTO.getEndAt());
+        }
+        boolean isBusy = bookingRepository.isSpotBusyInInterval(
                 bookingDTO.getSpotId(),
                 bookingDTO.getStartAt(),
                 bookingDTO.getEndAt()
-        )) {
-            throw new SpotBusyException("Unsuccessful attempt to book the spot with id - " + bookingDTO.getSpotId()
-                    + " in interval from " + bookingDTO.getStartAt() + " to " + bookingDTO.getEndAt());
+        );
+
+        log.info("Проверка занятости времени: {}", isBusy);
+
+        if(isBusy){
+            throw new SpotBusyException("Spot's busy!");
         }
 
         BookingEntity booking = bookingMapper.createBookingEntity(bookingDTO);
 
-        booking.setTotalPrice(countTotalPrice(spot.getPrice(), bookingDTO.getStartAt(), bookingDTO.getEndAt()));
+        booking.setTotalPrice(countTotalPrice(
+                spotPrice,
+                bookingDTO.getStartAt(),
+                bookingDTO.getEndAt()));
 
         bookingRepository.save(booking);
-
-//        kafkaResponsesProducer.sendResponseMessageToKafka(response);
 
         return bookingMapper.toBookingResponse(booking);
     }
