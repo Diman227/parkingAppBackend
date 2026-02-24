@@ -1,20 +1,29 @@
-package dev.parkingApp.dtos.request;
+package dev.parkingApp.dtos.kafka;
 
-import dev.parkingApp.dtos.base.UserBaseDTO;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import dev.parkingApp.dtos.base.NewUserBaseDTO;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class UserRequest extends UserBaseDTO {
+public class UserMessage extends NewUserBaseDTO {
 
     @NotNull
-    @Positive
     @Override
     public Long getId() {
         return super.getId();
+    }
+
+    @NotBlank
+    @Size(max = 15)
+    @Override
+    public String getPhoneNumber() {
+        return super.getPhoneNumber();
+    }
+
+    @NotBlank
+    @Size(max = 128)
+    public String getPassword() {
+        return super.getPassword();
     }
 
     @NotNull
@@ -40,5 +49,4 @@ public class UserRequest extends UserBaseDTO {
     public String getEmail() {
         return super.getEmail();
     }
-
 }

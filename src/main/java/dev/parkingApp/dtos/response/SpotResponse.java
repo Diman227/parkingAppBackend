@@ -1,5 +1,6 @@
 package dev.parkingApp.dtos.response;
 
+import dev.parkingApp.dtos.base.SpotBaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,18 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class SpotResponse {
-
-    private Long id;
-
-    private String description;
-
-    private String address;
-
-    private BigDecimal rate;
-
-    private BigDecimal price;
+public class SpotResponse extends SpotBaseDTO {
 
     private LocalDateTime createdAt;
 

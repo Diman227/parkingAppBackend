@@ -1,13 +1,12 @@
-package dev.parkingApp.dtos.request;
+package dev.parkingApp.dtos.kafka;
 
 import dev.parkingApp.dtos.base.CoordinatesBaseDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-public class CoordinatesRequest extends CoordinatesBaseDTO {
+public class CoordinatesMessage extends CoordinatesBaseDTO {
 
     @Null
     @Override

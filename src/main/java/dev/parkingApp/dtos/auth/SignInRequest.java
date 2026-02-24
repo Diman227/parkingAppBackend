@@ -1,34 +1,51 @@
 package dev.parkingApp.dtos.auth;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import dev.parkingApp.dtos.base.NewUserBaseDTO;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
-@Data
 @Builder
 @AllArgsConstructor
-public class SignInRequest {
+public class SignInRequest extends NewUserBaseDTO {
+
+    @Null
+    @Override
+    public Long getId() {
+        return super.getId();
+    }
 
     @NotBlank
     @Size(max = 15)
-    private String phoneNumber;
+    @Override
+    public String getPhoneNumber() {
+        return super.getPhoneNumber();
+    }
 
     @NotBlank
     @Size(max = 128)
-    private String password;
+    public String getPassword() {
+        return super.getPassword();
+    }
 
     @NotBlank
     @Size(max = 128)
-    private String surname;
+    @Override
+    public String getSurname() {
+        return super.getSurname();
+    }
 
     @NotBlank
     @Size(max = 128)
-    private String name;
+    @Override
+    public String getName() {
+        return super.getName();
+    }
 
     @NotBlank
     @Size(max = 64)
-    private String email;
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
+
 }

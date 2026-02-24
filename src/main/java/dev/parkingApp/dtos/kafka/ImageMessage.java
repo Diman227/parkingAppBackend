@@ -1,16 +1,15 @@
-package dev.parkingApp.dtos.request;
+package dev.parkingApp.dtos.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageRequest {
+public class ImageMessage {
 
-    private MultipartFile image;
+    private String imageUrl;
 }

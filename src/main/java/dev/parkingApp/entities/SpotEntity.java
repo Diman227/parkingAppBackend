@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,6 +21,9 @@ public class SpotEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "external_id")
+    private Long externalId;
 
     @Column(nullable = false)
     private String description;
@@ -46,6 +50,9 @@ public class SpotEntity {
 
     @Column(name = "owner_id")
     private Long ownerId;
+
+    @Column(name = "external_owner_id")
+    private Long externalOwnerId;
 
     @OneToMany(mappedBy = "spot",fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();

@@ -1,5 +1,6 @@
 package dev.parkingApp.mappers;
 
+import dev.parkingApp.dtos.kafka.SpotMessage;
 import dev.parkingApp.dtos.request.SpotRequest;
 import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
@@ -27,14 +28,25 @@ public interface SpotMapper {
     @Mapping(target = "rate", ignore = true)
     SpotEntity toSpotEntity(SpotRequest spotRequest);
 
-    @Mapping(target = "coordinates", source = "location")
+    @Mapping(target = "coordinates", source = "coordinates")
     @Mapping(target = "ownerId", source = "ownerId")
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
-    SpotEntity createSpotEntity(SpotRequest spotRequest);
+    @Mapping(target = "externalId", ignore = true)
+    @Mapping(target = "externalOwnerId", ignore = true)
+    SpotEntity createSpotEntityFromSpotRequest(SpotRequest spotRequest);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "description", source = "description")
     @Mapping(target = "price", source = "price")
     SpotEntity updateSpotEntity(@MappingTarget SpotEntity spot, SpotRequest spotRequest);
+
+    // Message ---> Entity
+
+    @Mapping(target = "externalId", source = "id")
+    @Mapping(target = "externalOwnerId", source = "ownerId")
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "ownerId", expression = "java(null)")
+    @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
+    SpotEntity createSpotEntityFromSpotMessage(SpotMessage spotMessage);
 
 }

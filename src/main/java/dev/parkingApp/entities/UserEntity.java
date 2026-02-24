@@ -18,6 +18,9 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "external_id")
+    private Long externalId;
+
     @Column(nullable = false)
     private String surname;
 
@@ -37,7 +40,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "renter", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<BookingEntity> bookings = new ArrayList<>();
 
-    // todo связь надо будет подумать и переделать
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<ChatEntity> chats = new ArrayList<>();
 }
