@@ -38,9 +38,9 @@ public class BookingService {
         log.info("Получена блокировка на спот {}", bookingDTO.getSpotId());
 
         //  для проверки
-//        try {
-//            Thread.sleep(10000); //
-//        } catch (InterruptedException e) {}
+        try {
+            Thread.sleep(15000); //
+        } catch (InterruptedException e) {}
 
         if(bookingDTO.getEndAt().isBefore(bookingDTO.getStartAt())) {
             throw new SpotBusyException("Unsuccessful attempt to book the spot with id - " + bookingDTO.getSpotId()

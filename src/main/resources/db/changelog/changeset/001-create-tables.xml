@@ -120,6 +120,9 @@
 
         <createTable tableName="spots">
             <column name="id" type="bigint" autoIncrement="true"/>
+            <column name="external_id" type="bigint">
+                <constraints unique="true" uniqueConstraintName="spot_external_id_unique_constraint"/>
+            </column>
             <column name="description" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
@@ -133,8 +136,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="owner_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
+            <column name="external_owner_id" type="bigint"/>
             <column name="coordinates_id" type="bigint">
                 <constraints nullable="false" unique="true" uniqueConstraintName="spot_coordinates_unique_constraint"/>
             </column>
@@ -142,6 +146,9 @@
 
         <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true"/>
+            <column name="external_id" type="bigint">
+                <constraints unique="true" uniqueConstraintName="user_external_id_unique_constraint"/>
+            </column>
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>

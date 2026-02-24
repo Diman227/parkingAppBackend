@@ -1,9 +1,8 @@
 package dev.parkingApp.configurations;
 
-import dev.parkingApp.dtos.auth.SignInRequest;
-import dev.parkingApp.dtos.request.SpotRequest;
+import dev.parkingApp.dtos.kafka.SpotMessage;
+import dev.parkingApp.dtos.kafka.UserMessage;
 import dev.parkingApp.services.kafka.KafkaExceptionHandler;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -58,12 +57,12 @@ public class KafkaConfig implements KafkaListenerConfigurer {
     }
 
     @Bean
-    public ConsumerFactory<String, SpotRequest> consumerSpotsFactory() {
+    public ConsumerFactory<String, SpotMessage> consumerSpotsFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-spots");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, SpotRequest.class.getName());
+        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, SpotMessage.class.getName());
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "*");
         log.info("ConsumerSpotsFactory created");
@@ -71,12 +70,12 @@ public class KafkaConfig implements KafkaListenerConfigurer {
     }
 
     @Bean
-    public ConsumerFactory<String, SignInRequest> consumerUsersFactory() {
+    public ConsumerFactory<String, UserMessage> consumerUsersFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "parking-app-bookings-users");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, SignInRequest.class.getName());
+        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, UserMessage.class.getName());
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonJsonDeserializer.class);
         config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "*");
         log.info("ConsumerUsersFactory created");
@@ -89,11 +88,11 @@ public class KafkaConfig implements KafkaListenerConfigurer {
     }
 
     @Bean(name = "kafkaListenerSpotsContainerFactory")
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, SpotRequest>> kafkaListenerSpotsContainerFactory (
-            ConsumerFactory<String, SpotRequest> consumerFactory,
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, SpotMessage>> kafkaListenerSpotsContainerFactory (
+            ConsumerFactory<String, SpotMessage> consumerFactory,
             CommonErrorHandler commonErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, SpotRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, SpotMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
         factory.setConcurrency(1);
@@ -103,11 +102,11 @@ public class KafkaConfig implements KafkaListenerConfigurer {
     }
 
     @Bean(name = "kafkaListenerUsersContainerFactory")
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, SignInRequest>> kafkaListenerUsersContainerFactory (
-            ConsumerFactory<String, SignInRequest> consumerFactory,
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, UserMessage>> kafkaListenerUsersContainerFactory (
+            ConsumerFactory<String, UserMessage> consumerFactory,
             CommonErrorHandler commonErrorHandler
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, SignInRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, UserMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
         factory.setConcurrency(1);
@@ -115,8 +114,4 @@ public class KafkaConfig implements KafkaListenerConfigurer {
 
         return factory;
     }
-
-
-
-
 }

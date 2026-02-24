@@ -3,8 +3,6 @@ package dev.parkingApp.services;
 import dev.parkingApp.dtos.request.ReviewRequest;
 import dev.parkingApp.dtos.response.ReviewResponse;
 import dev.parkingApp.entities.ReviewEntity;
-import dev.parkingApp.entities.SpotEntity;
-import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.ReviewNotFoundException;
 import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.exceptions.UserHaveNotPermissionException;
@@ -45,7 +43,7 @@ public class ReviewService {
         ReviewResponse response = reviewMapper.toReviewResponse(reviewRepository.save(review));
 
         if(!reviewDTO.getImages().isEmpty()) {
-            imageRepository.saveAll(imageMapper.toListImageEntities(imageAttachmentService.attachImagesToReview(review.getId(), reviewDTO.getImages())));
+            imageRepository.saveAll(imageMapper.toListImageEntities(imageAttachmentService.attachRequestImagesToReview(review.getId(), reviewDTO.getImages())));
         }
 
         return response;

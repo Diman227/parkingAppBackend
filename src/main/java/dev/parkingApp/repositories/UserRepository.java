@@ -19,4 +19,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             WHERE c.phoneNumber = :username
             """)
     Optional <UserEntity> getUserByUsername(@Param("username") String username);
+
+    @Query("""
+            SELECT u
+            FROM UserEntity u
+            WHERE u.externalId = :externalUserId
+            """)
+    Optional<UserEntity> getExternalUser(@Param("externalUserId") Long externalUserId);
 }

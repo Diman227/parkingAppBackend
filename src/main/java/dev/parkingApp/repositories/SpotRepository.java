@@ -4,6 +4,7 @@ import dev.parkingApp.entities.SpotEntity;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -36,5 +37,21 @@ public interface SpotRepository extends JpaRepository<SpotEntity, Long> {
             """)
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     BigDecimal getSpotPrice(@Param("spotId") Long spotId);
+
+    @Query("""
+            SELECT count(s) > 0
+            FROM SpotEntity s
+            WHERE s.externalOwnerId = :externalUserId
+            AND s.ownerId IS NULL
+            """)
+    boolean areUnownedSpotsWithoutOwnerExist(@Param("externalUserId") Long externalUserId);
+
+    @Modifying
+    @Query("""
+            UPDATE SpotEntity s
+            SET s.ownerId = :userId
+            WHERE s.externalOwnerId = :externalUserId
+            """)
+    void updateUnownedSpotsWithoutOwner(@Param("userId") Long userId, @Param("externalUserId") Long externalUserId);
 
 }

@@ -7,6 +7,7 @@ CREATE index image_spot_id_index ON images (spot_id);
 CREATE index images_review_id ON images (review_id);
 
 CREATE index spot_owner_id_index ON spots (owner_id);
+CREATE index spot_external_owner_id_index ON spots (external_owner_id);
 
 CREATE index credentials_password_id_index ON credentials (password_id);
 

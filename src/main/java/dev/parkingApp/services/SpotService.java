@@ -1,15 +1,18 @@
 package dev.parkingApp.services;
 
+import dev.parkingApp.dtos.kafka.SpotMessage;
 import dev.parkingApp.dtos.request.SpotRequest;
 import dev.parkingApp.dtos.response.ImageResponse;
 import dev.parkingApp.dtos.response.SpotResponse;
 import dev.parkingApp.entities.SpotEntity;
+import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.SpotNotFoundException;
 import dev.parkingApp.mappers.ImageMapper;
 import dev.parkingApp.mappers.SpotMapper;
 import dev.parkingApp.repositories.ImageRepository;
 import dev.parkingApp.repositories.ReviewRepository;
 import dev.parkingApp.repositories.SpotRepository;
+import dev.parkingApp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,6 +30,7 @@ public class SpotService {
     private final SpotRepository spotRepository;
     private final ImageRepository imageRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     private final ImageAttachmentService imageAttachmentService;
 
@@ -33,25 +38,46 @@ public class SpotService {
     private final SpotMapper spotMapper;
 
     @Transactional
-    public SpotResponse createSpot(SpotRequest spotDTO) {
+    public SpotResponse createSpotFromRequest(SpotRequest spotDTO) {
 
-        SpotEntity spot = spotMapper.createSpotEntity(spotDTO);
+        SpotEntity spot = spotMapper.createSpotEntityFromSpotRequest(spotDTO);
 
         //spot.setRate(calculateSpotRating(spot.getId()));
 
         SpotResponse response = spotMapper.toSpotResponse(spotRepository.save(spot));
 
-        log.info("Saved spot is - {}", spot.toString());
+        log.info("Saved spot from request is - {}", spot.toString());
 
         if(spotDTO.getImages() != null && !spotDTO.getImages().isEmpty()) {
             // todo
-            List<ImageResponse> images = imageAttachmentService.attachImagesToSpot(
+            List<ImageResponse> images = imageAttachmentService.attachRequestImagesToSpot(
                     response.getId(),
                     spotDTO.getImages());
             imageRepository.saveAll(imageMapper.toListImageEntities(images));
         }
 
         return response;
+    }
+
+    @Transactional
+    public void createSpotFromMessage(SpotMessage spotMessage) {
+
+        SpotEntity spot = spotMapper.createSpotEntityFromSpotMessage(spotMessage);
+
+        Optional<UserEntity> spotOwner = userRepository.getExternalUser(spot.getExternalOwnerId());
+        spotOwner.ifPresent(userEntity -> spot.setOwnerId(userEntity.getId()));
+
+        SpotResponse response = spotMapper.toSpotResponse(spotRepository.save(spot));
+
+        log.info("Saved spot from message is - {}", spot.toString());
+
+        if(spotMessage.getImages() != null && !spotMessage.getImages().isEmpty()) {
+            // todo
+            List<ImageResponse> images = imageAttachmentService.attachMessageImagesToSpot(
+                    response.getId(),
+                    spotMessage.getImages());
+            imageRepository.saveAll(imageMapper.toListImageEntities(images));
+        }
     }
 
     public SpotResponse updateSpot(Long spotId, SpotRequest spotDTO) {
@@ -81,5 +107,15 @@ public class SpotService {
     // todo
     public BigDecimal calculateSpotRating(Long spotId) {
         return reviewRepository.calculateSpotRating(spotId);
+    }
+
+    public void updateUnownedSpots(Long userId, Long externalUserId) {
+        if(spotRepository.areUnownedSpotsWithoutOwnerExist(externalUserId)) {
+            log.info("Найдены споты без владельца с externalOwnerId = {}", externalUserId);
+            spotRepository.updateUnownedSpotsWithoutOwner(userId, externalUserId);
+            log.info("Владелец спотов успешно найден и присвоен записям, ownerId = {}", userId);
+            return;
+        }
+        log.info("Бесхозных спотов не найдено!");
     }
 }

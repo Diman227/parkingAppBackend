@@ -1,11 +1,12 @@
 package dev.parkingApp.services;
 
 import dev.parkingApp.dtos.auth.*;
-import dev.parkingApp.entities.CredentialsEntity;
-import dev.parkingApp.entities.PasswordEntity;
+import dev.parkingApp.dtos.base.NewUserBaseDTO;
+import dev.parkingApp.dtos.kafka.UserMessage;
 import dev.parkingApp.entities.RefreshTokenEntity;
 import dev.parkingApp.entities.UserEntity;
 import dev.parkingApp.exceptions.*;
+import dev.parkingApp.mappers.UserMapper;
 import dev.parkingApp.repositories.RefreshTokenRepository;
 import dev.parkingApp.repositories.UserRepository;
 import dev.parkingApp.services.auth.AuthUserDetailsService;
@@ -28,12 +29,15 @@ import java.util.Optional;
 public class AuthService {
 
     private final AuthUserDetailsService authUserDetailsService;
+    private final SpotService spotService;
 
     private final AuthenticationManager authenticationManager;
     private final TokenManager tokenManager;
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    private final UserMapper userMapper;
 
     @Transactional
     public TokenResponse authenticateUser(LogInRequest logInRequest) {
@@ -85,21 +89,19 @@ public class AuthService {
     }
 
     @Transactional
-    public void createUser(SignInRequest request) {
+    public void registerUser(NewUserBaseDTO userDTO) {
 
-        final CredentialsEntity credentialsEntity = CredentialsEntity.builder()
-                .phoneNumber(request.getPhoneNumber())
-                .password(new PasswordEntity(request.getPassword()))
-                .build();
+        final UserEntity user = userMapper.createUserFromBaseDTO(userDTO);
 
-        final UserEntity user = UserEntity.builder()
-                .surname(request.getSurname())
-                .name(request.getName())
-                .email(request.getEmail())
-                .credentials(credentialsEntity)
-                .build();
+        if (userDTO instanceof UserMessage) {
+            user.setExternalId(userDTO.getId());
+        }
 
         userRepository.save(user);
+
+        if(user.getExternalId() != null){
+            spotService.updateUnownedSpots(user.getId(), user.getExternalId());
+        }
 
         log.info("Saved user is - {}", user.toString());
     }

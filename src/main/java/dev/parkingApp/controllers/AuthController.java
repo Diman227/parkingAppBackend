@@ -28,7 +28,7 @@ public class AuthController {
     @PostMapping(value = "register")
     public ResponseEntity<String> createUser(
             @RequestBody @Valid SignInRequest request) {
-        authService.createUser(request);
+        authService.registerUser(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
