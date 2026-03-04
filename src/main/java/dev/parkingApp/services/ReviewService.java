@@ -1,6 +1,7 @@
 package dev.parkingApp.services;
 
 import dev.parkingApp.dtos.request.ReviewRequest;
+import dev.parkingApp.dtos.response.ImageResponse;
 import dev.parkingApp.dtos.response.ReviewResponse;
 import dev.parkingApp.entities.ReviewEntity;
 import dev.parkingApp.exceptions.ReviewNotFoundException;
@@ -12,6 +13,7 @@ import dev.parkingApp.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +24,6 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final SpotRepository spotRepository;
-    private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final ImageRepository imageRepository;
 
@@ -32,7 +33,7 @@ public class ReviewService {
     private final ImageMapper imageMapper;
 
     @Transactional
-    public ReviewResponse createReview(ReviewRequest reviewDTO) {
+    public ReviewResponse createReview(ReviewRequest reviewDTO, List<MultipartFile> images) {
 
         if(!bookingRepository.hadUserBookingOfSpot(reviewDTO.getSpotId(), reviewDTO.getAuthorId(), LocalDateTime.now())) {
             throw new UserHaveNotPermissionException("User can't post review for spot with id - " + reviewDTO.getSpotId());
@@ -43,7 +44,8 @@ public class ReviewService {
         ReviewResponse response = reviewMapper.toReviewResponse(reviewRepository.save(review));
 
         if(!reviewDTO.getImages().isEmpty()) {
-            imageRepository.saveAll(imageMapper.toListImageEntities(imageAttachmentService.attachRequestImagesToReview(review.getId(), reviewDTO.getImages())));
+            List<ImageResponse> imagesResponse = imageAttachmentService.attachRequestImagesToReview(review.getId(), images);
+            imageRepository.saveAll(imageMapper.toListImageEntities(imagesResponse));
         }
 
         return response;

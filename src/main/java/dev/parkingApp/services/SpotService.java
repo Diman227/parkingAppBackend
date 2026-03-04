@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,7 +39,7 @@ public class SpotService {
     private final SpotMapper spotMapper;
 
     @Transactional
-    public SpotResponse createSpotFromRequest(SpotRequest spotDTO) {
+    public SpotResponse createSpotFromRequest(SpotRequest spotDTO, List<MultipartFile> images) {
 
         SpotEntity spot = spotMapper.createSpotEntityFromSpotRequest(spotDTO);
 
@@ -50,10 +51,10 @@ public class SpotService {
 
         if(spotDTO.getImages() != null && !spotDTO.getImages().isEmpty()) {
             // todo
-            List<ImageResponse> images = imageAttachmentService.attachRequestImagesToSpot(
+            List<ImageResponse> imagesResponse = imageAttachmentService.attachRequestImagesToSpot(
                     response.getId(),
-                    spotDTO.getImages());
-            imageRepository.saveAll(imageMapper.toListImageEntities(images));
+                    images);
+            imageRepository.saveAll(imageMapper.toListImageEntities(imagesResponse));
         }
 
         return response;
@@ -67,14 +68,14 @@ public class SpotService {
         Optional<UserEntity> spotOwner = userRepository.getExternalUser(spot.getExternalOwnerId());
         spotOwner.ifPresent(userEntity -> spot.setOwnerId(userEntity.getId()));
 
-        SpotResponse response = spotMapper.toSpotResponse(spotRepository.save(spot));
+        spotRepository.save(spot);
 
         log.info("Saved spot from message is - {}", spot.toString());
 
         if(spotMessage.getImages() != null && !spotMessage.getImages().isEmpty()) {
             // todo
             List<ImageResponse> images = imageAttachmentService.attachMessageImagesToSpot(
-                    response.getId(),
+                    spot.getId(),
                     spotMessage.getImages());
             imageRepository.saveAll(imageMapper.toListImageEntities(images));
         }
@@ -105,7 +106,7 @@ public class SpotService {
     }
 
     // todo
-    public BigDecimal calculateSpotRating(Long spotId) {
+    private BigDecimal calculateSpotRating(Long spotId) {
         return reviewRepository.calculateSpotRating(spotId);
     }
 

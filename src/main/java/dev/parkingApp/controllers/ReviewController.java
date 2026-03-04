@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,11 +30,12 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.getSpotReviews(spotId), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("#reviewDTO.authorId == authentication.principal.userId")
     public ResponseEntity<ReviewResponse> createReview(
-            @RequestBody @Validated(ReviewRequest.Create.class) ReviewRequest reviewDTO) {
-        return new ResponseEntity<>(reviewService.createReview(reviewDTO), HttpStatus.CREATED);
+            @RequestPart @Validated(ReviewRequest.Create.class) ReviewRequest reviewDTO,
+            @RequestPart("images") List<MultipartFile> images) {
+        return new ResponseEntity<>(reviewService.createReview(reviewDTO, images), HttpStatus.CREATED);
     }
 
     @PutMapping("/{reviewId}")

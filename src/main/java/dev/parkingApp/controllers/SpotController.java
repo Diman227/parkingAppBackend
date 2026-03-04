@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,11 +26,12 @@ public class SpotController {
 
     private final SpotService spotService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("#spotDTO.ownerId == authentication.principal.userId")
     public ResponseEntity<SpotResponse> createSpot(
-            @RequestBody @Validated(SpotRequest.Create.class) SpotRequest spotDTO) {
-        return new ResponseEntity<>(spotService.createSpotFromRequest(spotDTO), HttpStatus.CREATED);
+            @RequestPart("spot") @Validated(SpotRequest.Create.class) SpotRequest spotDTO,
+            @RequestPart("images") List<MultipartFile> images) {
+        return new ResponseEntity<>(spotService.createSpotFromRequest(spotDTO, images), HttpStatus.CREATED);
     }
 
     @PutMapping("/{spotId}")

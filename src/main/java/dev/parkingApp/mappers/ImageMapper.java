@@ -15,8 +15,6 @@ public interface ImageMapper {
 
     List<ImageEntity> toListImageEntities(List<ImageResponse> imageResponse);
 
-    // Request --> Entity
-
     @Mapping(target = "spotId", source = "spot.id")
     @Mapping(target = "reviewId", source = "review.id")
     ImageResponse toImageResponse(ImageEntity image);

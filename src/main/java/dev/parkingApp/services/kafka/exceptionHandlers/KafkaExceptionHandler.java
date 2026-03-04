@@ -1,4 +1,4 @@
-package dev.parkingApp.services.kafka;
+package dev.parkingApp.services.kafka.exceptionHandlers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;

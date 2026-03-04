@@ -4,20 +4,19 @@ import dev.parkingApp.exceptions.FailedFileDeleteException;
 import dev.parkingApp.exceptions.FailedFileUploadException;
 import io.minio.*;
 
-import io.minio.errors.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileService {
@@ -26,6 +25,8 @@ public class FileService {
 
     @Value("${minio.bucket-name}")
     private String bucketName;
+
+    private final int EXPIRY_TIME = 60 * 60 * 24;
 
     public String addFile(MultipartFile file) {
 
@@ -44,20 +45,18 @@ public class FileService {
             );
             return fileName;
 
-        } catch (Exception e) {
-            throw new FailedFileUploadException("File wasn't uploaded with name - " + fileName);
+        } catch (Exception ex) {
+            log.info("File with name - {} wasn't uploaded: {}", fileName, ex.getMessage());
+            return null;
         }
     }
 
-    public List<String> addFiles(MultipartFile[] files) {
-        List<String> responses = new ArrayList<>();
+    public List<String> addFiles(List<MultipartFile> files) {
 
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) continue;
-            responses.add(addFile(file));
-
-        }
-        return responses;
+        return files.stream()
+                .map(this::addFile)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     // todo https://github.com/minio/minio-java/blob/master/examples/GetPresignedObjectUrl.java
@@ -69,14 +68,11 @@ public class FileService {
                             .method(Method.GET)
                             .bucket(bucketName)
                             .object(fileName)
-                            .expiry(60 * 60 * 24)
+                            .expiry(EXPIRY_TIME)
                             .build()
             );
 
-            // not working without, IDEA's solution/hint
-        } catch (ServerException | InternalException | XmlParserException | InvalidResponseException |
-                 InvalidKeyException | NoSuchAlgorithmException | IOException | ErrorResponseException |
-                 InsufficientDataException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

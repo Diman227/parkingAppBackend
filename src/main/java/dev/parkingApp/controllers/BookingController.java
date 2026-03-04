@@ -2,7 +2,6 @@ package dev.parkingApp.controllers;
 
 import dev.parkingApp.dtos.request.BookingRequest;
 import dev.parkingApp.dtos.response.BookingResponse;
-import dev.parkingApp.mappers.BookingMapper;
 import dev.parkingApp.services.BookingService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,8 +21,6 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
-
-    private final BookingMapper bookingMapper;
 
     @GetMapping(value = "/{userId}/bookings")
     @PreAuthorize("#userId == authentication.principal.userId")
@@ -56,8 +53,8 @@ public class BookingController {
     @PostMapping(value = "/bookings")
     @PreAuthorize("#bookingDTO.renterId == authentication.principal.userId")
     public ResponseEntity<BookingResponse> createBooking(
-            @RequestBody @Validated(BookingRequest.Create.class) BookingRequest bookingDTO) {
-        return new ResponseEntity<>(bookingService.createBooking(bookingDTO), HttpStatus.CREATED);
+            @RequestBody @Validated(BookingRequest.Create.class) BookingRequest bookingRequest) {
+        return new ResponseEntity<>(bookingService.createBooking(bookingRequest), HttpStatus.CREATED);
     }
 
 }

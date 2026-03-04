@@ -2,7 +2,7 @@ package dev.parkingApp.configurations;
 
 import dev.parkingApp.dtos.kafka.SpotMessage;
 import dev.parkingApp.dtos.kafka.UserMessage;
-import dev.parkingApp.services.kafka.KafkaExceptionHandler;
+import dev.parkingApp.services.kafka.exceptionHandlers.KafkaExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
